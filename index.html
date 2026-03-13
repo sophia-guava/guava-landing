@@ -95,9 +95,10 @@
 }
         
         .hero-content {
-            max-width: 680px;
-            animation: fadeInUp 1s ease-out;
-        }
+    max-width: 680px;
+    animation: fadeInUp 1s ease-out;
+    text-align: center;
+}
 
         .eyebrow {
             font-family: 'Crimson Pro', serif;
@@ -119,7 +120,7 @@ h1 {
     margin-bottom: 40px;
     color: var(--guava-green);
     letter-spacing: -2px;
-    text-align: center;
+    text-align: left;
     opacity: 0;
     animation: fadeIn 0.8s ease-out 0.4s forwards;
 }
@@ -130,14 +131,14 @@ h1 {
             font-style: italic;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out 0.8s forwards;
-            justify-content: center;
-        }
+       .cta-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.8s forwards;
+    justify-content: center;
+}
 
         .btn {
     padding: 16px 32px;
@@ -210,10 +211,6 @@ h1 {
         opacity: 0.25;
     }
 
-    .cta-group {
-        flex-direction: column;
-    }
-
     .btn {
         width: 100%;
         text-align: center;
@@ -240,7 +237,7 @@ h1 {
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-               <div class="eyebrow"><span style="color: var(--guava-green);">Guava</span> <span style="color: var(--guava-pink);">Dating</span></div>
+              /* <div class="eyebrow"><span style="color: var(--guava-green);">Guava</span> <span style="color: var(--guava-pink);">Dating</span></div> */
                 <h1>An AI matchmaker for modern blind dates.<br><strong> No swiping required.</strong></h1>
                 <div class="cta-group">
                     <a href="https://app.joinguava.co/auth" class="btn btn-primary">Join Guava</a>
