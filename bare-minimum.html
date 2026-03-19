@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bare Minimum Report — Guava</title>
+<meta property="og:title" content="The Bare Minimum Report — Guava">
+<meta property="og:description" content="Did they do something sweet — or is that just called being a decent human? Submit it. We'll tell you the truth.">
+<meta property="og:url" content="https://joinguava.co/bare-minimum.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Bare Minimum Report — Guava">
+<meta name="twitter:description" content="Did they do something sweet — or is that just called being a decent human?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:  #fefefe;
+  --wine:   #591e2e;
+  --green:  #a2b930;
+  --coral:  #fb7f8c;
+  --butter: #f8e9b1;
+  --mint:   #ceeccf;
+  --dark:   #1a1118;
+  --muted:  #7a6e70;
+  --bg:     #f7f3ee;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23591e2e' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+.wrap{
+  position:relative;z-index:1;
+  max-width:680px;margin:0 auto;
+  padding:40px 20px 80px;
+  display:flex;flex-direction:column;align-items:center;
+}
+
+/* NAV */
+.nav{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;}
+.nav a{text-decoration:none;display:flex;align-items:center;gap:9px;}
+.nav img{width:36px;height:36px;object-fit:contain;}
+.nav-word{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--green);}
+.nav-tag{font-size:12px;color:var(--muted);font-style:italic;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:48px;width:100%;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--wine);color:var(--white);
+  font-size:11px;font-weight:500;letter-spacing:1.5px;
+  text-transform:uppercase;padding:6px 16px;
+  border-radius:100px;margin-bottom:24px;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,8vw,68px);
+  font-weight:900;line-height:0.95;
+  letter-spacing:-2px;color:var(--dark);
+  margin-bottom:20px;
+}
+.hero h1 em{font-style:italic;color:var(--wine);display:block;}
+.hero-sub{
+  font-size:17px;line-height:1.7;color:var(--muted);
+  max-width:400px;margin:0 auto;font-weight:300;
+}
+
+/* BAR VISUAL - the main UI centerpiece */
+.bar-container{
+  width:100%;margin-bottom:32px;
+  background:var(--white);border-radius:24px;
+  padding:32px 36px;
+  border:1.5px solid rgba(162,185,48,0.2);
+  box-shadow:0 2px 32px rgba(89,30,46,0.06);
+  position:relative;overflow:hidden;
+}
+.bar-container::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--mint),var(--butter),var(--coral),var(--wine));
+}
+.bar-labels{
+  display:flex;justify-content:space-between;
+  margin-bottom:12px;
+}
+.bar-label-left{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-weight:700;color:var(--green);
+  display:flex;align-items:center;gap:6px;
+}
+.bar-label-right{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-weight:700;color:var(--wine);
+  display:flex;align-items:center;gap:6px;
+}
+.bar-track{
+  height:36px;background:#f0ebe4;
+  border-radius:100px;overflow:hidden;
+  position:relative;margin-bottom:10px;
+}
+.bar-fill{
+  height:100%;border-radius:100px;
+  background:linear-gradient(90deg,var(--mint),var(--butter),var(--coral),var(--wine));
+  transition:width 1.4s cubic-bezier(0.4,0,0.2,1);
+  width:0%;
+  display:flex;align-items:center;justify-content:flex-end;
+  padding-right:12px;
+  position:relative;
+}
+.bar-fill::after{
+  content:'';
+  position:absolute;right:-1px;top:50%;transform:translateY(-50%);
+  width:4px;height:44px;
+  background:var(--dark);border-radius:2px;
+  opacity:0;transition:opacity 0.3s ease 1s;
+}
+.bar-fill.filled::after{opacity:1;}
+.bar-tick-labels{
+  display:flex;justify-content:space-between;
+  padding:0 4px;
+}
+.bar-tick{font-size:11px;color:var(--muted);font-style:italic;}
+
+/* score display */
+.score-display{
+  text-align:center;margin-top:20px;
+  padding-top:20px;border-top:1px solid rgba(162,185,48,0.12);
+}
+.score-number{
+  font-family:'Playfair Display',serif;
+  font-size:56px;font-weight:900;letter-spacing:-2px;
+  color:var(--dark);line-height:1;margin-bottom:4px;
+}
+.score-number span{font-size:24px;color:var(--muted);}
+.score-verdict-label{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;font-style:italic;
+  margin-bottom:4px;
+}
+.score-sub{font-size:13px;color:var(--muted);font-weight:300;letter-spacing:0.3px;}
+
+/* INPUT CARD */
+.input-card{
+  background:var(--white);border-radius:24px;
+  padding:40px;width:100%;
+  border:1.5px solid rgba(162,185,48,0.2);
+  box-shadow:0 4px 48px rgba(89,30,46,0.08);
+  margin-bottom:24px;position:relative;overflow:hidden;
+}
+.input-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--mint),var(--butter),var(--coral),var(--wine));
+}
+.input-label{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;color:var(--dark);margin-bottom:6px;
+}
+.input-hint{font-size:13px;color:var(--muted);margin-bottom:20px;font-weight:300;font-style:italic;}
+textarea{
+  width:100%;min-height:110px;
+  background:#f9f6f2;border:1.5px solid rgba(162,185,48,0.2);
+  border-radius:14px;padding:16px 18px;
+  font-family:'DM Sans',sans-serif;font-size:15px;
+  line-height:1.6;color:var(--dark);resize:none;outline:none;
+  transition:border-color 0.2s ease;
+}
+textarea:focus{border-color:var(--green);}
+textarea::placeholder{color:#bbb;font-style:italic;}
+.char-count{font-size:12px;color:var(--muted);text-align:right;margin-top:6px;margin-bottom:20px;}
+.btn-analyze{
+  width:100%;background:var(--wine);color:var(--white);
+  border:none;border-radius:14px;padding:18px;
+  font-size:16px;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:all 0.22s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 4px 20px rgba(89,30,46,0.25);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn-analyze:hover{background:#6e2438;transform:translateY(-2px);}
+.btn-analyze:disabled{background:#c4a4aa;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* LOADING */
+.loading-state{display:none;text-align:center;padding:24px 0;}
+.loading-state.active{display:block;}
+.loading-dots{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;}
+.ld{width:10px;height:10px;border-radius:50%;animation:ldPulse 1.2s ease-in-out infinite;}
+.ld-1{background:var(--mint);}
+.ld-2{background:var(--butter);animation-delay:0.15s;}
+.ld-3{background:var(--coral);animation-delay:0.3s;}
+.ld-4{background:var(--wine);animation-delay:0.45s;}
+@keyframes ldPulse{0%,100%{transform:scale(0.6);opacity:0.4;}50%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--muted);transition:opacity 0.2s ease;}
+
+/* RESULT */
+.result-section{display:none;width:100%;}
+.result-section.active{display:block;animation:fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* VERDICT */
+.verdict-card{
+  background:var(--white);border-radius:24px;
+  padding:36px 40px;
+  border:1.5px solid rgba(162,185,48,0.15);
+  box-shadow:0 2px 32px rgba(89,30,46,0.06);
+  margin-bottom:20px;
+}
+.verdict-eyebrow{
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--green);font-weight:500;
+  font-family:'Playfair Display',serif;margin-bottom:12px;
+}
+.verdict-text{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:400;line-height:1.6;color:var(--dark);
+}
+
+/* COMPARISON CARD */
+.comparison-card{
+  border-radius:24px;padding:32px 36px;
+  margin-bottom:20px;position:relative;overflow:hidden;
+}
+.comparison-label{
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  font-weight:500;font-family:'Playfair Display',serif;margin-bottom:10px;
+}
+.comparison-text{
+  font-family:'Playfair Display',serif;
+  font-size:17px;font-weight:700;line-height:1.5;color:var(--dark);
+  margin-bottom:16px;
+}
+.comparison-sub{font-size:14px;line-height:1.7;font-weight:300;}
+
+/* FOLLOW UP */
+.followup-card{
+  background:linear-gradient(135deg,#fde8ea,#faefc0);
+  border-radius:24px;padding:32px 36px;
+  border:1.5px solid rgba(251,127,140,0.25);
+  margin-bottom:20px;position:relative;overflow:hidden;
+}
+.followup-card::after{content:'👀';position:absolute;right:24px;top:24px;font-size:28px;opacity:0.3;}
+.followup-label{
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--wine);font-weight:500;
+  font-family:'Playfair Display',serif;margin-bottom:10px;
+}
+.followup-q{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;line-height:1.5;color:var(--dark);margin-bottom:20px;
+}
+textarea.followup-input{
+  background:rgba(255,255,255,0.7);
+  border-color:rgba(251,127,140,0.3);min-height:80px;margin-bottom:12px;
+}
+textarea.followup-input:focus{border-color:var(--coral);}
+.btn-followup{
+  background:var(--wine);color:var(--white);border:none;
+  border-radius:12px;padding:14px 28px;font-size:14px;font-weight:500;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all 0.2s ease;box-shadow:0 3px 12px rgba(89,30,46,0.2);
+}
+.btn-followup:hover{background:#6e2438;transform:translateY(-1px);}
+.btn-followup:disabled{background:#c4a4aa;cursor:not-allowed;transform:none;}
+.followup-response{
+  display:none;margin-top:16px;padding:16px;
+  background:rgba(255,255,255,0.8);border-radius:12px;
+  font-family:'Playfair Display',serif;
+  font-size:16px;line-height:1.65;color:var(--dark);
+}
+.followup-response.active{display:block;animation:fadeUp 0.4s ease forwards;}
+
+/* GUAVA CTA */
+.guava-cta{
+  background:var(--white);border-radius:24px;padding:32px 36px;
+  border:1.5px solid rgba(162,185,48,0.2);
+  box-shadow:0 2px 32px rgba(89,30,46,0.05);
+  margin-bottom:20px;display:flex;align-items:center;gap:20px;
+}
+.cta-icon{font-size:40px;flex-shrink:0;}
+.cta-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.cta-text{font-size:14px;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:14px;}
+.btn-cta{
+  background:var(--wine);color:var(--white);border:none;
+  border-radius:11px;padding:12px 24px;font-size:14px;font-weight:500;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all 0.2s ease;text-decoration:none;display:inline-block;
+  box-shadow:0 3px 12px rgba(89,30,46,0.2);
+}
+.btn-cta:hover{background:#6e2438;transform:translateY(-1px);}
+
+/* ACTIONS */
+.result-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;}
+.btn-share{
+  background:#f9f6f2;color:var(--wine);
+  border:1.5px solid rgba(89,30,46,0.2);
+  border-radius:12px;padding:14px 28px;
+  font-size:14px;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all 0.18s ease;
+  display:flex;align-items:center;gap:7px;
+  width:100%;max-width:380px;justify-content:center;
+}
+.btn-share:hover{border-color:var(--wine);background:var(--white);}
+.btn-again{
+  font-size:14px;color:var(--muted);background:none;border:none;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  text-decoration:underline;text-decoration-color:rgba(122,110,112,0.3);
+  transition:color 0.18s;font-weight:300;
+}
+.btn-again:hover{color:var(--wine);}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:32px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:var(--dark);color:var(--white);
+  padding:14px 28px;border-radius:100px;font-size:14px;
+  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  z-index:999;white-space:nowrap;pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:580px){
+  .hero h1{font-size:44px;}
+  .input-card,.verdict-card,.followup-card,.guava-cta{padding:28px 22px;}
+  .bar-container{padding:24px 22px;}
+  .guava-cta{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html">
+      <img src="logo.png" alt="Guava">
+      <span class="nav-word">Guava</span>
+    </a>
+    <span class="nav-tag">a public service</span>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">📊 Relationship Standards Division</div>
+    <h1>The Bare<br><em>Minimum</em><br>Report</h1>
+    <p class="hero-sub">They did something. You're impressed. But should you be? Submit it. We'll let you know if the bar is on the floor.</p>
+  </div>
+
+  <!-- BAR VISUAL (shown before result too as preview) -->
+  <div class="bar-container" id="bar-container" style="display:none;">
+    <div class="bar-labels">
+      <div class="bar-label-left">🏆 Above & Beyond</div>
+      <div class="bar-label-right">🪨 Rock Bottom</div>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" id="bar-fill"></div>
+    </div>
+    <div class="bar-tick-labels">
+      <div class="bar-tick">Gold star</div>
+      <div class="bar-tick">Sweet</div>
+      <div class="bar-tick">Fine</div>
+      <div class="bar-tick">The bar</div>
+      <div class="bar-tick">Below it</div>
+    </div>
+    <div class="score-display">
+      <div class="score-number" id="score-number">0<span>/100</span></div>
+      <div class="score-verdict-label" id="score-label">—</div>
+      <div class="score-sub" id="score-sub"></div>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-card" id="input-card">
+    <div class="input-label">What did they do?</div>
+    <div class="input-hint">Be specific. "He was nice" tells us nothing. "He texted me back within 24 hours" tells us everything.</div>
+    <textarea id="main-input" placeholder="e.g. He remembered my coffee order after only asking once and I've been telling everyone about it for two weeks…" maxlength="500" oninput="updateChar()"></textarea>
+    <div class="char-count"><span id="char-num">0</span>/500</div>
+    <button class="btn-analyze" id="analyze-btn" onclick="analyze()">
+      <span id="btn-label">📊 Run The Report</span>
+    </button>
+    <div class="loading-state" id="loading-state">
+      <div class="loading-dots">
+        <div class="ld ld-1"></div><div class="ld ld-2"></div>
+        <div class="ld ld-3"></div><div class="ld ld-4"></div>
+      </div>
+      <div class="loading-text" id="loading-text">Checking the archives…</div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-section" id="result-section">
+
+    <!-- VERDICT -->
+    <div class="verdict-card">
+      <div class="verdict-eyebrow">Official Finding</div>
+      <div class="verdict-text" id="verdict-text"></div>
+    </div>
+
+    <!-- COMPARISON -->
+    <div class="comparison-card" id="comparison-card">
+      <div class="comparison-label" id="comparison-label"></div>
+      <div class="comparison-text" id="comparison-text"></div>
+      <div class="comparison-sub" id="comparison-sub"></div>
+    </div>
+
+    <!-- FOLLOW UP -->
+    <div class="followup-card">
+      <div class="followup-label">One more question…</div>
+      <div class="followup-q" id="followup-q"></div>
+      <textarea class="followup-input" id="followup-input" placeholder="Be honest." maxlength="300"></textarea>
+      <button class="btn-followup" id="followup-btn" onclick="submitFollowup()">Tell me →</button>
+      <div class="followup-response" id="followup-response"></div>
+    </div>
+
+    <!-- GUAVA CTA -->
+    <div class="guava-cta">
+      <div class="cta-icon" id="cta-icon">🍃</div>
+      <div class="cta-body">
+        <div class="cta-title" id="cta-title">The bar doesn't have to be this low.</div>
+        <div class="cta-text" id="cta-text">Guava matches you based on actual compatibility. One person. One week. Meet in person. No situationships.</div>
+        <a href="https://app.joinguava.co/auth" class="btn-cta" target="_blank">Try Guava →</a>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="result-actions">
+      <button class="btn-share" onclick="shareResult()">📤 Share your report</button>
+      <button class="btn-again" onclick="tryAgain()">Submit another one</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const LEVELS = [
+  { max:20,  label:"Genuinely Impressive",  sub:"We're not used to this. Cherish them.",          color:"#a2b930", cardBg:"linear-gradient(135deg,#eaf5d4,#d4edba)", labelColor:"#4a6b10" },
+  { max:40,  label:"Actually Sweet",        sub:"Points awarded. Cautiously.",                    color:"#c4cc45", cardBg:"linear-gradient(135deg,#fdf6dc,#faefc0)", labelColor:"#7a6400" },
+  { max:55,  label:"Fine. It's Fine.",       sub:"This is just called being normal.",              color:"#f8c97a", cardBg:"linear-gradient(135deg,#fef3e2,#fde8c0)", labelColor:"#7a5000" },
+  { max:70,  label:"The Bare Minimum",       sub:"Congratulations on doing the least.",            color:"#fb9f7f", cardBg:"linear-gradient(135deg,#fde8e0,#fdd0c0)", labelColor:"#7a3010" },
+  { max:85,  label:"Below The Bar",          sub:"The bar was already on the floor.",              color:"#fb7f8c", cardBg:"linear-gradient(135deg,#fde8ea,#fcd0d5)", labelColor:"#7a1020" },
+  { max:100, label:"Subterranean",           sub:"The bar has left the building entirely.",        color:"#591e2e", cardBg:"linear-gradient(135deg,#f5e0e4,#ecc8d0)", labelColor:"#591e2e" }
+];
+
+const LOADING_MSGS = [
+  "Checking the archives…",
+  "Consulting the standards committee…",
+  "Measuring the bar…",
+  "Reviewing human decency guidelines…",
+  "Running the numbers…"
+];
+
+let currentScore = 0;
+let currentInput = '';
+let currentFollowupQ = '';
+
+function updateChar(){
+  document.getElementById('char-num').textContent = document.getElementById('main-input').value.length;
+}
+
+async function analyze(){
+  const input = document.getElementById('main-input').value.trim();
+  if(!input || input.length < 5){ showToast('Give us something to work with.'); return; }
+  currentInput = input;
+
+  document.getElementById('analyze-btn').disabled = true;
+  document.getElementById('btn-label').textContent = '⏳ Running the report…';
+  document.getElementById('loading-state').classList.add('active');
+  document.getElementById('result-section').classList.remove('active');
+  document.getElementById('bar-container').style.display = 'none';
+  document.getElementById('input-card').scrollIntoView({behavior:'smooth',block:'center'});
+
+  let mi = 0;
+  const lel = document.getElementById('loading-text');
+  lel.style.transition = 'opacity 0.2s ease';
+  const liv = setInterval(()=>{
+    mi=(mi+1)%LOADING_MSGS.length;
+    lel.style.opacity=0;
+    setTimeout(()=>{lel.textContent=LOADING_MSGS[mi];lel.style.opacity=1;},220);
+  },1000);
+
+  try {
+    const res = await fetch('/api/proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are The Bare Minimum Report — a hilariously honest judge of whether someone's partner/situationship/date did something genuinely impressive or just... the absolute bare minimum of human decency.
+
+You rate actions from 0-100 where:
+0-20: Genuinely Impressive (rare, celebrate this)
+21-40: Actually Sweet (nice, but don't throw a parade)
+41-55: Fine. It's Fine. (normal human behavior, not special)
+56-70: The Bare Minimum (this is just called being a person)
+71-85: Below The Bar (the bar was already on the floor)
+86-100: Subterranean (they have found a way to go lower)
+
+CRITICAL RULES:
+- NEVER ask for clarification. ALWAYS respond with JSON.
+- If input is vague, assume the most mediocre, dating-related interpretation.
+- You are savage about low bars but genuinely warm about high ones.
+- Roast the SITUATION and STANDARDS, never the person submitting.
+- Use Gen Z/millennial voice naturally: "bestie", "the audacity", "living rent free", "era", "understood the assignment", "not a single thought", "core memory", "main character", "ate", "slay".
+- WORD LIMITS: verdict MAX 20 words. followup_question MAX 15 words.
+
+Respond ONLY with a raw JSON object. Start with { end with }. Nothing else.
+{
+  "score": <0-100>,
+  "verdict": "<MAX 20 WORDS. Punchy verdict on whether this is impressive or the bare minimum.>",
+  "comparison": "<One funny comparison that puts it in perspective. e.g. 'This is like getting applause for showing up to work on time.' MAX 20 words.>",
+  "comparison_context": "<1-2 sentences expanding on why the bar is where it is. Funny, a little savage.>",
+  "followup_question": "<MAX 15 WORDS. One pointed follow-up question about their standards or the situation.>",
+  "cta_context": "<MAX 20 WORDS. One sentence connecting their situation to why Guava exists.>"
+}`,
+        messages:[{role:'user',content:`What they did: ${input}`}]
+      })
+    });
+
+    clearInterval(liv);
+    if(!res.ok) throw new Error(`API error: ${res.status}`);
+    const data = await res.json();
+    const raw = data.content[0].text;
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if(!jsonMatch) throw new Error('No JSON in response');
+    const result = JSON.parse(jsonMatch[0]);
+    displayResult(result);
+
+  } catch(e){
+    clearInterval(liv);
+    console.error(e);
+    if(e.message.includes('401')) showToast('API key issue — check Vercel settings.');
+    else if(e.message.includes('429')) showToast('The committee is overwhelmed — try again shortly.');
+    else showToast('Something went wrong — please try again.');
+    document.getElementById('analyze-btn').disabled=false;
+    document.getElementById('btn-label').textContent='📊 Run The Report';
+    document.getElementById('loading-state').classList.remove('active');
+  }
+}
+
+function displayResult(r){
+  currentScore = Math.min(100,Math.max(0,r.score));
+  currentFollowupQ = r.followup_question;
+
+  document.getElementById('loading-state').classList.remove('active');
+
+  const level = LEVELS.find(l=>currentScore<=l.max)||LEVELS[LEVELS.length-1];
+
+  // show bar
+  document.getElementById('bar-container').style.display='block';
+  document.getElementById('bar-container').style.animation='fadeUp 0.5s ease forwards';
+
+  setTimeout(()=>{
+    const fill = document.getElementById('bar-fill');
+    fill.style.width = currentScore + '%';
+    fill.classList.add('filled');
+  },150);
+
+  // animate counter
+  let n=0;
+  const iv = setInterval(()=>{
+    n=Math.min(n+Math.ceil(currentScore/40),currentScore);
+    document.getElementById('score-number').innerHTML=`${n}<span>/100</span>`;
+    if(n>=currentScore) clearInterval(iv);
+  },35);
+
+  document.getElementById('score-label').textContent = level.label;
+  document.getElementById('score-label').style.color = level.color;
+  document.getElementById('score-sub').textContent = level.sub;
+
+  // verdict
+  document.getElementById('verdict-text').textContent = r.verdict;
+
+  // comparison card
+  const cc = document.getElementById('comparison-card');
+  cc.style.background = level.cardBg;
+  cc.style.border = `1.5px solid rgba(89,30,46,0.1)`;
+  document.getElementById('comparison-label').textContent = '📐 For context';
+  document.getElementById('comparison-label').style.color = level.labelColor;
+  document.getElementById('comparison-text').textContent = r.comparison;
+  document.getElementById('comparison-sub').textContent = r.comparison_context;
+
+  // followup
+  document.getElementById('followup-q').textContent = r.followup_question;
+  document.getElementById('followup-input').value='';
+  document.getElementById('followup-response').classList.remove('active');
+  document.getElementById('followup-response').textContent='';
+  document.getElementById('followup-btn').disabled=false;
+  document.getElementById('followup-btn').textContent='Tell me →';
+
+  // cta
+  if(currentScore >= 56){
+    document.getElementById('cta-icon').textContent='🚨';
+    document.getElementById('cta-title').textContent='The bar does not have to live on the floor.';
+  } else {
+    document.getElementById('cta-icon').textContent='🍃';
+    document.getElementById('cta-title').textContent='You clearly have standards. Guava respects that.';
+  }
+  document.getElementById('cta-text').textContent = r.cta_context || 'Guava matches you with one person based on actual compatibility. No situationships. No bare minimum.';
+
+  window._result = { score: currentScore, label: level.label, input: currentInput };
+
+  document.getElementById('result-section').classList.add('active');
+  document.getElementById('analyze-btn').disabled=false;
+  document.getElementById('btn-label').textContent='📊 Run The Report';
+
+  setTimeout(()=>document.getElementById('bar-container').scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
+async function submitFollowup(){
+  const answer = document.getElementById('followup-input').value.trim();
+  if(!answer||answer.length<3){showToast('Give us something.');return;}
+  document.getElementById('followup-btn').disabled=true;
+  document.getElementById('followup-btn').textContent='Processing…';
+
+  try{
+    const res = await fetch('/api/proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:200,
+        system:`You are The Bare Minimum Report follow-up judge. MAX 20 WORDS total in your response. One punchy reaction to their answer. Funny, a little savage, ends with a tiny shred of hope or humor. No italics. Plain text only.`,
+        messages:[{role:'user',content:`Original submission: ${currentInput}\nBar score: ${currentScore}/100\nFollow-up question: ${currentFollowupQ}\nTheir answer: ${answer}`}]
+      })
+    });
+    if(!res.ok) throw new Error(`${res.status}`);
+    const data = await res.json();
+    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    const el = document.getElementById('followup-response');
+    el.textContent=text;
+    el.classList.add('active');
+    document.getElementById('followup-btn').textContent='✓ Noted';
+  }catch(e){
+    showToast('Try again.');
+    document.getElementById('followup-btn').disabled=false;
+    document.getElementById('followup-btn').textContent='Tell me →';
+  }
+}
+
+function tryAgain(){
+  document.getElementById('main-input').value='';
+  document.getElementById('char-num').textContent='0';
+  document.getElementById('result-section').classList.remove('active');
+  document.getElementById('bar-container').style.display='none';
+  const fill=document.getElementById('bar-fill');
+  fill.style.transition='none';fill.style.width='0%';fill.classList.remove('filled');
+  setTimeout(()=>fill.style.transition='width 1.4s cubic-bezier(0.4,0,0.2,1)',50);
+  document.getElementById('score-number').innerHTML='0<span>/100</span>';
+  document.getElementById('score-label').textContent='—';
+  document.getElementById('score-sub').textContent='';
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>document.getElementById('main-input').focus(),400);
+}
+
+function shareResult(){
+  const r=window._result;
+  if(!r) return;
+  const txt=`I just ran "${r.input.slice(0,60)}${r.input.length>60?'…':''}" through The Bare Minimum Report and got ${r.score}/100 — "${r.label}" 💀\n\nCheck yours → joinguava.co/bare-minimum.html`;
+  if(navigator.share){
+    navigator.share({title:'The Bare Minimum Report',text:txt,url:'https://joinguava.co/bare-minimum.html'})
+      .catch(()=>navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied!')));
+  } else {
+    navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied to clipboard'));
+  }
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),5000);
+}
+</script>
+</body>
+</html>
