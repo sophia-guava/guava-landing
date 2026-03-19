@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Type of Partner Are You? — Guava</title>
+<meta property="og:title" content="What Type of Partner Are You? — Guava">
+<meta property="og:description" content="10 questions. Uncomfortably accurate. Find out what type of partner you actually are.">
+<meta property="og:url" content="https://joinguava.co/partner-type.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Type of Partner Are You? — Guava">
+<meta name="twitter:description" content="10 questions. Uncomfortably accurate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#fefefe;--wine:#591e2e;--green:#a2b930;
+  --coral:#fb7f8c;--butter:#f8e9b1;--mint:#ceeccf;
+  --dark:#1a1118;--muted:#7a6e70;--bg:#f7f3ee;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23a2b930' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:660px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;align-items:center;}
+
+.nav{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;}
+.nav a{text-decoration:none;display:flex;align-items:center;gap:9px;}
+.nav img{width:36px;height:36px;object-fit:contain;}
+.nav-word{font-family:'Crimson Pro',serif;font-size:21px;font-weight:600;color:var(--green);}
+.nav-tag{font-size:12px;color:var(--muted);font-style:italic;}
+
+.screen{display:none;width:100%;flex-direction:column;align-items:center;}
+.screen.active{display:flex;animation:sIn 0.45s cubic-bezier(0.22,1,0.36,1) forwards;}
+@keyframes sIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* INTRO */
+.intro-card{background:var(--white);border-radius:28px;padding:60px 52px;text-align:center;width:100%;border:1.5px solid rgba(162,185,48,0.15);box-shadow:0 2px 48px rgba(89,30,46,0.06);position:relative;overflow:hidden;}
+.intro-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--mint),var(--butter),var(--coral),var(--wine));}
+.intro-icon{width:76px;height:76px;background:linear-gradient(135deg,var(--butter),var(--coral));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-size:34px;box-shadow:0 8px 28px rgba(251,127,140,0.3);}
+.intro-eyebrow{font-family:'Crimson Pro',serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:16px;}
+.intro-title{font-family:'Crimson Pro',serif;font-size:48px;font-weight:300;line-height:1.05;letter-spacing:-1.8px;color:var(--dark);margin-bottom:18px;}
+.intro-title em{font-style:italic;font-weight:600;color:var(--wine);}
+.intro-sub{font-size:16px;line-height:1.75;color:var(--muted);max-width:380px;margin:0 auto 36px;font-weight:300;}
+.intro-meta{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:36px;flex-wrap:wrap;}
+.meta-pill{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);background:var(--bg);padding:7px 16px;border-radius:100px;border:1px solid rgba(162,185,48,0.2);font-family:'Crimson Pro',serif;font-style:italic;}
+.meta-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.btn-primary{background:var(--wine);color:var(--white);border:none;border-radius:14px;padding:18px 52px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.22s ease;box-shadow:0 4px 20px rgba(89,30,46,0.28);}
+.btn-primary:hover{background:#6e2438;transform:translateY(-2px);box-shadow:0 8px 28px rgba(89,30,46,0.3);}
+
+/* QUESTION */
+.q-header{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.q-back{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(162,185,48,0.25);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:var(--green);transition:all 0.18s ease;flex-shrink:0;}
+.q-back:hover{border-color:var(--green);background:var(--bg);}
+.progress-wrap{flex:1;margin:0 16px;}
+.progress-label{font-family:'Crimson Pro',serif;font-size:13px;color:var(--muted);text-align:center;margin-bottom:8px;}
+.progress-track{height:3px;background:rgba(162,185,48,0.15);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--green));border-radius:100px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+.q-count{font-family:'Crimson Pro',serif;font-size:14px;color:var(--muted);flex-shrink:0;}
+.q-card{background:var(--white);border-radius:28px;padding:48px 46px 44px;width:100%;border:1.5px solid rgba(162,185,48,0.12);box-shadow:0 2px 40px rgba(89,30,46,0.05);}
+.q-text{font-family:'Crimson Pro',serif;font-size:28px;font-weight:400;line-height:1.28;color:var(--dark);letter-spacing:-0.3px;margin-bottom:32px;}
+.options-grid{display:flex;flex-direction:column;gap:10px;}
+.option-btn{background:var(--bg);border:1.5px solid transparent;border-radius:14px;padding:16px 20px;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;color:var(--dark);transition:all 0.18s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;gap:14px;font-weight:300;}
+.option-btn:hover{border-color:rgba(162,185,48,0.45);background:var(--white);transform:translateX(3px);}
+.option-btn.selected{border-color:var(--green);background:var(--white);box-shadow:0 0 0 3px rgba(162,185,48,0.1);}
+.option-btn.selected .opt-letter{background:var(--green);color:var(--white);border-color:var(--green);}
+.opt-letter{width:30px;height:30px;border-radius:8px;border:1.5px solid rgba(162,185,48,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--muted);flex-shrink:0;transition:all 0.18s ease;font-family:'Crimson Pro',serif;}
+.opt-text{flex:1;}
+.opt-flash{animation:oIn 0.28s cubic-bezier(0.22,1,0.36,1) both;}
+@keyframes oIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+
+/* LOADING */
+.loading-card{background:var(--white);border-radius:28px;padding:80px 52px;text-align:center;width:100%;border:1.5px solid rgba(162,185,48,0.12);box-shadow:0 2px 40px rgba(89,30,46,0.05);}
+.orbs{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:40px;}
+.orb{width:11px;height:11px;border-radius:50%;animation:oP 1.4s ease-in-out infinite;}
+.orb-1{background:var(--mint);}
+.orb-2{background:var(--butter);animation-delay:0.2s;}
+.orb-3{background:var(--coral);animation-delay:0.4s;}
+@keyframes oP{0%,100%{transform:scale(0.75);opacity:0.45;}50%{transform:scale(1.2);opacity:1;}}
+.loading-title{font-family:'Crimson Pro',serif;font-size:34px;font-weight:300;color:var(--dark);letter-spacing:-1px;margin-bottom:10px;transition:opacity 0.2s ease;}
+.loading-sub{font-size:15px;color:var(--muted);font-weight:300;}
+
+/* RESULT */
+.result-header{text-align:center;margin-bottom:24px;width:100%;}
+.result-eyebrow{font-family:'Crimson Pro',serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:6px;}
+.result-intro{font-family:'Crimson Pro',serif;font-size:20px;font-weight:300;color:var(--muted);font-style:italic;}
+.result-card{background:var(--white);border-radius:28px;overflow:hidden;width:100%;border:1.5px solid rgba(162,185,48,0.12);box-shadow:0 4px 56px rgba(89,30,46,0.08);margin-bottom:20px;}
+
+.result-banner{padding:52px 46px 40px;position:relative;overflow:hidden;}
+.result-banner::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;opacity:0.12;}
+.result-emoji{font-size:52px;margin-bottom:12px;display:block;animation:pop 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.15s both;}
+@keyframes pop{from{transform:scale(0.2);opacity:0;}to{transform:scale(1);opacity:1;}}
+.result-type{font-family:'Crimson Pro',serif;font-size:44px;font-weight:600;line-height:1;letter-spacing:-1.5px;margin-bottom:6px;}
+.result-era{font-family:'Crimson Pro',serif;font-size:17px;font-weight:300;font-style:italic;opacity:0.7;margin-bottom:16px;}
+.result-tagline{font-size:15px;line-height:1.72;opacity:0.85;max-width:430px;font-weight:300;}
+
+.result-body{padding:36px 46px 44px;display:flex;flex-direction:column;gap:26px;}
+.section-label{font-family:'Crimson Pro',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:12px;}
+
+.traits-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.trait-pill{display:flex;align-items:center;gap:10px;padding:11px 15px;background:var(--bg);border-radius:10px;font-size:14px;color:var(--dark);border:1px solid rgba(162,185,48,0.12);font-weight:300;}
+.trait-icon{font-size:15px;flex-shrink:0;}
+
+.roast-card{border-radius:16px;padding:28px;position:relative;overflow:hidden;}
+.roast-card::before{content:'💀';position:absolute;right:18px;top:18px;font-size:24px;opacity:0.18;}
+.roast-label{font-family:'Crimson Pro',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:10px;opacity:0.7;}
+.roast-text{font-size:15px;line-height:1.8;font-weight:300;}
+
+.guava-callout{background:linear-gradient(135deg,#f0f4ee,#e8f0e6);border-radius:16px;padding:26px;border:1px solid rgba(162,185,48,0.2);position:relative;overflow:hidden;}
+.guava-callout::before{content:'🍃';position:absolute;right:18px;top:18px;font-size:24px;opacity:0.2;}
+.callout-title{font-family:'Crimson Pro',serif;font-size:18px;font-weight:600;color:var(--dark);margin-bottom:8px;}
+.callout-text{font-size:14px;line-height:1.75;color:var(--muted);font-weight:300;}
+
+.result-actions{display:flex;flex-direction:column;align-items:center;gap:13px;width:100%;}
+.btn-cta{background:var(--wine);color:var(--white);border:none;border-radius:14px;padding:18px 52px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.22s ease;width:100%;max-width:380px;box-shadow:0 4px 20px rgba(89,30,46,0.25);}
+.btn-cta:hover{background:#6e2438;transform:translateY(-2px);}
+.btn-share{background:var(--bg);color:var(--wine);border:1.5px solid rgba(89,30,46,0.2);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.18s ease;display:flex;align-items:center;gap:7px;width:100%;max-width:380px;justify-content:center;}
+.btn-share:hover{border-color:var(--wine);background:var(--white);}
+.btn-retake{font-size:14px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-decoration-color:rgba(122,110,112,0.3);transition:color 0.18s;font-weight:300;}
+.btn-retake:hover{color:var(--wine);}
+
+/* RESULT THEMES */
+.type-overthinker .result-banner{background:linear-gradient(135deg,#fdf6dc,#f8e9a8);color:var(--dark);}
+.type-overthinker .result-banner::after{background:#c4a832;}
+.type-overthinker .roast-card{background:#fdf6dc;border:1px solid rgba(196,168,50,0.25);}
+.type-overthinker .roast-label{color:#7a6000;}
+.type-overthinker .roast-text{color:#5a4800;}
+
+.type-golden .result-banner{background:linear-gradient(135deg,#fff8e8,#fcecc0);color:var(--dark);}
+.type-golden .result-banner::after{background:#e8a820;}
+.type-golden .roast-card{background:#fff8e8;border:1px solid rgba(232,168,32,0.25);}
+.type-golden .roast-label{color:#7a5000;}
+.type-golden .roast-text{color:#5a3800;}
+
+.type-ghost .result-banner{background:linear-gradient(135deg,#eef1f5,#dde3ec);color:var(--dark);}
+.type-ghost .result-banner::after{background:#8b94ad;}
+.type-ghost .roast-card{background:#eef1f8;border:1px solid rgba(139,148,173,0.25);}
+.type-ghost .roast-label{color:#3a4060;}
+.type-ghost .roast-text{color:#2a3050;}
+
+.type-pm .result-banner{background:linear-gradient(135deg,#e8f2ec,#d0e8da);color:var(--dark);}
+.type-pm .result-banner::after{background:var(--green);}
+.type-pm .roast-card{background:#eaf5e0;border:1px solid rgba(162,185,48,0.25);}
+.type-pm .roast-label{color:#3a6010;}
+.type-pm .roast-text{color:#2a5000;}
+
+.type-hotmess .result-banner{background:linear-gradient(135deg,#fde8ea,#fcc8d0);color:var(--dark);}
+.type-hotmess .result-banner::after{background:var(--coral);}
+.type-hotmess .roast-card{background:#fde8ea;border:1px solid rgba(251,127,140,0.25);}
+.type-hotmess .roast-label{color:#7a1020;}
+.type-hotmess .roast-text{color:#5a0818;}
+
+.type-therapist .result-banner{background:linear-gradient(135deg,#f0e8f5,#e0d0ec);color:var(--dark);}
+.type-therapist .result-banner::after{background:#a060c0;}
+.type-therapist .roast-card{background:#f0e8f5;border:1px solid rgba(160,96,192,0.2);}
+.type-therapist .roast-label{color:#602080;}
+.type-therapist .roast-text{color:#501070;}
+
+.type-comfortable .result-banner{background:linear-gradient(135deg,var(--mint),#b0ddb8);color:var(--dark);}
+.type-comfortable .result-banner::after{background:#5a9e60;}
+.type-comfortable .roast-card{background:#e8f5e9;border:1px solid rgba(90,158,96,0.25);}
+.type-comfortable .roast-label{color:#2d6030;}
+.type-comfortable .roast-text{color:#1d5020;}
+
+.type-secretagent .result-banner{background:linear-gradient(135deg,#e8e8e8,#d0d0d8);color:var(--dark);}
+.type-secretagent .result-banner::after{background:#606068;}
+.type-secretagent .roast-card{background:#eeeeee;border:1px solid rgba(96,96,104,0.2);}
+.type-secretagent .roast-label{color:#303038;}
+.type-secretagent .roast-text{color:#202028;}
+
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:var(--white);padding:14px 28px;border-radius:100px;font-size:14px;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);z-index:999;white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:580px){
+  .intro-card,.q-card{padding:36px 24px;}
+  .result-banner{padding:36px 24px 28px;}
+  .result-body{padding:26px 24px 36px;}
+  .intro-title{font-size:38px;}
+  .q-text{font-size:24px;}
+  .result-type{font-size:34px;}
+  .traits-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a href="index.html">
+      <img src="logo.png" alt="Guava">
+      <span class="nav-word">Guava</span>
+    </a>
+    <span class="nav-tag">an honest mirror</span>
+  </nav>
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-card">
+      <div class="intro-icon">🪞</div>
+      <div class="intro-eyebrow">Relationship Intelligence</div>
+      <h1 class="intro-title">What kind of partner<br>are you <em>actually?</em></h1>
+      <p class="intro-sub">Not the version you tell your friends. The version your ex would describe. 10 questions. No sugarcoating.</p>
+      <div class="intro-meta">
+        <div class="meta-pill"><div class="meta-dot"></div>10 questions</div>
+        <div class="meta-pill"><div class="meta-dot"></div>~3 minutes</div>
+        <div class="meta-pill"><div class="meta-dot"></div>Tag a friend</div>
+      </div>
+      <button class="btn-primary" onclick="startQuiz()">Find out →</button>
+    </div>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="screen-question">
+    <div class="q-header">
+      <button class="q-back" id="back-btn" onclick="goBack()">←</button>
+      <div class="progress-wrap">
+        <div class="progress-label" id="prog-label">Question 1 of 10</div>
+        <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+      <div class="q-count" id="q-count">1/10</div>
+    </div>
+    <div class="q-card">
+      <div class="q-text" id="q-text"></div>
+      <div class="options-grid" id="options-grid"></div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-card">
+      <div class="orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+      <div class="loading-title" id="loading-msg">Consulting your exes (spiritually)…</div>
+      <div class="loading-sub">Matching you to 8 partner types</div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div class="result-header">
+      <div class="result-eyebrow">Your result</div>
+      <div class="result-intro">Congratulations, you are…</div>
+    </div>
+    <div class="result-card" id="result-card">
+      <div class="result-banner">
+        <span class="result-emoji" id="result-emoji"></span>
+        <div class="result-type" id="result-type"></div>
+        <div class="result-era" id="result-era"></div>
+        <div class="result-tagline" id="result-tagline"></div>
+      </div>
+      <div class="result-body">
+        <div>
+          <div class="section-label">Your tells</div>
+          <div class="traits-grid" id="traits-grid"></div>
+        </div>
+        <div class="roast-card" id="roast-card">
+          <div class="roast-label">Here's the thing though</div>
+          <div class="roast-text" id="roast-text"></div>
+        </div>
+        <div class="guava-callout">
+          <div class="callout-title" id="callout-title"></div>
+          <div class="callout-text" id="callout-text"></div>
+        </div>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="btn-cta" onclick="window.open('https://app.joinguava.co/auth','_blank')">Try Guava — it's free →</button>
+      <button class="btn-share" onclick="shareResult()">📤 Share your result</button>
+      <button class="btn-retake" onclick="retake()">Retake the quiz</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const Qs=[
+  {
+    text:"Your crush hasn't texted first in two weeks. You:",
+    opts:[
+      {t:"Text anyway. You like them, who cares.",type:"GR"},
+      {t:"Analyze whether their reply time is trending up or down.",type:"OT"},
+      {t:"Disappear for three days so they know you're busy too.",type:"GH"},
+      {t:"Send something that makes them text first without being obvious.",type:"HM"}
+    ]
+  },
+  {
+    text:"It's date three. Things are going well. You're thinking:",
+    opts:[
+      {t:"Already know what to say when they bring up the talk.",type:"PM"},
+      {t:"Wonder if \"going well\" means they're losing interest.",type:"OT"},
+      {t:"Nothing. You're just here. It's nice.",type:"CO"},
+      {t:"What ended their last relationship.",type:"TH"}
+    ]
+  },
+  {
+    text:"They said they'd call at 8. It's 8:52. You:",
+    opts:[
+      {t:"Called once. Spiral-logged it. Currently pretending to be fine.",type:"GR"},
+      {t:"Refreshed their story viewers. Three times.",type:"OT"},
+      {t:"Are out. Made plans. If they call they call.",type:"CO"},
+      {t:"Already drafted what you'll say when they call.",type:"HM"}
+    ]
+  },
+  {
+    text:"How do your friends know you're into someone?",
+    opts:[
+      {t:"You've given them a full briefing including timeline and screenshots.",type:"OT"},
+      {t:"You mentioned them once. Then went extremely quiet.",type:"GH"},
+      {t:"You start fixing things in their life unprompted.",type:"PM"},
+      {t:"You're different around them. Everyone sees it but you.",type:"GR"}
+    ]
+  },
+  {
+    text:"They cancel last minute. You:",
+    opts:[
+      {t:"Say \"no worries\" and mean zero percent of it.",type:"OT"},
+      {t:"Ask if they're okay before feeling anything else.",type:"TH"},
+      {t:"Already have backup plans. Honestly might prefer them.",type:"SA"},
+      {t:"Note it. Add it to the file. Say nothing.",type:"GH"}
+    ]
+  },
+  {
+    text:"Three months in. Things feel comfortable. You feel:",
+    opts:[
+      {t:"Good. Stable was always the goal.",type:"PM"},
+      {t:"Slightly itchy. Not unhappy. Just noticing.",type:"GH"},
+      {t:"Like they might be getting too comfortable.",type:"OT"},
+      {t:"The urge to introduce a little chaos. Just to check.",type:"HM"}
+    ]
+  },
+  {
+    text:"Your partner says they need more communication. You:",
+    opts:[
+      {t:"Open a shared doc. Start an agenda. Schedule a check-in.",type:"PM"},
+      {t:"Feel blindsided. You thought things were fine.",type:"GH"},
+      {t:"Feel relieved. You needed it too. Wouldn't say it first.",type:"OT"},
+      {t:"Have a great chat about it. Revert completely within a week.",type:"HM"}
+    ]
+  },
+  {
+    text:"How do you fight?",
+    opts:[
+      {t:"Calmly. Same day. You refuse to let things fester.",type:"PM"},
+      {t:"You don't. Go quiet, need 48 hours minimum.",type:"GH"},
+      {t:"Said something 40% too honest. Now everyone's here.",type:"HM"},
+      {t:"Scheduled time to discuss it. There are talking points.",type:"TH"}
+    ]
+  },
+  {
+    text:"Your ex posts a thirst trap. You:",
+    opts:[
+      {t:"Genuinely unbothered. Closed the app in four seconds.",type:"CO"},
+      {t:"Viewed it. Closed it. Reopened it. Viewed it again.",type:"GR"},
+      {t:"Liked it. Immediately unlike it. Panic.",type:"OT"},
+      {t:"Posted your own within the hour. Not because of them. Obviously.",type:"HM"}
+    ]
+  },
+  {
+    text:"Your phone is on the table. Someone reaches for it. You:",
+    opts:[
+      {t:"Don't care. Nothing there.",type:"CO"},
+      {t:"Casually flip it over. Reflex. Not hiding anything.",type:"SA"},
+      {t:"Feel a flash of something. Remember you have nothing to hide.",type:"GR"},
+      {t:"Already moved it before they got close.",type:"SA"}
+    ]
+  }
+];
+
+const R={
+  OT:{
+    cls:"type-overthinker",emoji:"🌀",
+    type:"The Overthinker",
+    era:"permanently in their 'what did that text mean' era",
+    tagline:"You draft texts like they're legal documents. By date three you have 'so where is this going?' loaded and ready. Your brain is a full-time relationship analyst and it did not ask for this job.",
+    traits:[{i:"🔍",t:"Reads between every line"},{i:"📱",t:"Tracks response patterns"},{i:"💭",t:"Rehearses conversations"},{i:"🗂️",t:"Has a mental file on everyone"}],
+    roast:"The analysis is not protecting you — it's exhausting you. You have spent more time preparing for the relationship than being in it. The version of them in your head has been through three arguments that never happened. Not everything is a signal. Some texts are just texts. Put the case file down.",
+    ctaTitle:"The apps are designed to feed your exact anxiety.",
+    ctaText:"Guava removes the read receipts, the 'active now,' and the infinite scroll. One match. One week. The uncertainty has an end date."
+  },
+  GR:{
+    cls:"type-golden",emoji:"🐕",
+    type:"The Golden Retriever",
+    era:"enthusiastically in their 'I just really like them' era",
+    tagline:"Enthusiastic, loyal, a little too eager. You will double-text 'haha' and then panic about it for 45 minutes. You love hard and you're not ashamed of it. The problem is you hand that over before anyone has earned it.",
+    traits:[{i:"💛",t:"All in from day one"},{i:"📲",t:"Double-texts without shame"},{i:"🏃",t:"Emotionally available immediately"},{i:"😬",t:"Immediately regrets being available"}],
+    roast:"Your enthusiasm is genuinely lovely. The issue is you're running at full capacity for someone who's still deciding if they want to show up to practice. You keep giving before there's a relationship to give to. At some point the right person will match your energy — but they can't do that if you've already handed everything over by date two.",
+    ctaTitle:"You deserve someone who matches your energy.",
+    ctaText:"Guava matches on actual compatibility, not first-week chemistry. Charlotte's already checked if they show up before you meet."
+  },
+  GH:{
+    cls:"type-ghost",emoji:"👻",
+    type:"The Ghost Who Cares",
+    era:"in their 'I'll respond when I'm ready' era indefinitely",
+    tagline:"You genuinely like people. You will also disappear for three days because you 'got busy.' Your love language is eventually responding. You're not cold — you just process everything internally and communicate on a delay that nobody else is on.",
+    traits:[{i:"🔕",t:"Goes quiet when it's real"},{i:"📭",t:"Reads. Responds eventually."},{i:"🚪",t:"Notices the exits"},{i:"🌫️",t:"Present in theory"}],
+    roast:"'I need space' is valid. Using it every time someone asks where things are going is a pattern. The person you keep at arm's length has already started grieving you while you're still deciding if you like them. You are not mysterious — you are unavailable, and there's a difference. That's not a vibe, bestie. That's a wall.",
+    ctaTitle:"What if the right person made showing up feel easy?",
+    ctaText:"Guava's blind matching removes the performance pressure. No profile to hide behind. One conversation with a deadline that forces both people to decide."
+  },
+  PM:{
+    cls:"type-pm",emoji:"📋",
+    type:"The Project Manager",
+    era:"currently in their 'I have a system for this' era",
+    tagline:"Shared Google Calendar by week two. Date night has an agenda. You show love through logistics and it is both impressive and slightly unhinged. There may have been a relationship retrospective. You know who you are.",
+    traits:[{i:"📅",t:"Shared calendar by week two"},{i:"✅",t:"Relationship has deliverables"},{i:"📊",t:"Tracks patterns, takes notes"},{i:"🗓️",t:"Date night has an agenda"}],
+    roast:"The systems are not the problem. The reason for the systems is. You manage the relationship the same way you manage a project because being spontaneous means losing control and losing control means something could go wrong. At some point someone is going to want you to just show up without a plan. That is allowed. Nothing will break.",
+    ctaTitle:"Guava is very organized. You'll like it here.",
+    ctaText:"One match. One week. Clear timeline. Charlotte does the matching — you just have to show up to the date."
+  },
+  HM:{
+    cls:"type-hotmess",emoji:"🔥",
+    type:"The Hot Mess Express",
+    era:"thriving in their 'I meant well' era",
+    tagline:"Chaotic but magnetic. You will plan an incredible surprise date and also forget their birthday. You never know which version you're getting — and honestly, neither do you. The right person finds this thrilling. Everyone else finds it exhausting.",
+    traits:[{i:"🎲",t:"Introduces chaos to test the vibe"},{i:"💥",t:"40% too honest at key moments"},{i:"🎉",t:"Grand gestures, zero follow-through"},{i:"🔄",t:"Reverts. Every time."}],
+    roast:"The chaos is not the problem. The reason for the chaos is. You shake things up when you're scared, when it gets too real, when you need to know if they'll stay. That is not spontaneity — that is a test with no passing grade. Someone out there will match your energy. But they cannot find you if you keep setting fire to things the moment they get close.",
+    ctaTitle:"The apps keep the chaos alive on purpose.",
+    ctaText:"Guava gives you one person and one week. No options to blow up. Just a conversation that actually has to go somewhere."
+  },
+  TH:{
+    cls:"type-therapist",emoji:"🛋️",
+    type:"The Therapist",
+    era:"currently in their 'have you processed that?' era",
+    tagline:"\"And how did that make you feel?\" You've read Attached. You know your attachment style. You will diagnose theirs whether they asked or not. You are emotionally intelligent, genuinely caring, and a little exhausting to date if they haven't done the work.",
+    traits:[{i:"📚",t:"Has read all the books"},{i:"🔎",t:"Will identify your patterns"},{i:"💬",t:"Asks the uncomfortable questions"},{i:"🧠",t:"Knows everyone's attachment style"}],
+    roast:"Not everything is a wound that needs processing. Sometimes people are just late. Sometimes 'I'm fine' means I'm fine. You have turned emotional intelligence into an Olympic sport and now the bar for your partner is a full therapy journey before date four. The right person will appreciate your depth. But they'll need room to be a work in progress without being a project.",
+    ctaTitle:"Guava matches on depth, not just vibes.",
+    ctaText:"Charlotte has a full conversation with both people before matching. You'll actually have something to work with before you meet."
+  },
+  CO:{
+    cls:"type-comfortable",emoji:"🛋️",
+    type:"The Comfortable One",
+    era:"peaked romantically in month three",
+    tagline:"Peaked romantically during the first three months. Now their idea of quality time is parallel phone scrolling on the couch. And honestly? They're not entirely wrong. Comfort is underrated. You've just maybe taken it a bit far.",
+    traits:[{i:"📵",t:"Unbothered. Verified."},{i:"🛋️",t:"Couch is the love language"},{i:"😌",t:"Stable. Almost suspiciously so."},{i:"🤷",t:"Not chasing anything"}],
+    roast:"There's comfortable and then there's checked out with good branding. The person across from you is wondering if you actually like them or if they're just convenient. 'I'm just easygoing' is not a personality — it's a way of never being wrong and never being accountable. At some point someone needs you to have a feeling. Out loud. On purpose.",
+    ctaTitle:"Guava is for people who are ready when they're ready.",
+    ctaText:"No swiping spiral. No performance. One match when the fit is actually there — not just when you're bored."
+  },
+  SA:{
+    cls:"type-secretagent",emoji:"🕵️",
+    type:"The Secret Agent",
+    era:"operating on a strictly need-to-know basis",
+    tagline:"Phone always face-down. Not necessarily hiding anything — they just believe privacy is a core value. Sure, bud. You are an entire person with an entire life that somehow nobody knows about. The mystery is either very attractive or a giant red flag depending on who's asking.",
+    traits:[{i:"📵",t:"Phone always face-down"},{i:"🔒",t:"Privacy is a 'core value'"},{i:"🌐",t:"Entire second life, maybe"},{i:"🤐",t:"Shares on a need-to-know basis"}],
+    roast:"Privacy and secrecy are not the same thing and you know it. The person you're dating is not asking for your passwords — they're asking if you actually let people in. The face-down phone is a habit. The habit is a wall. The wall has been there a long time. At some point you're going to have to decide if you're protecting yourself or just making yourself impossible to know.",
+    ctaTitle:"Guava is actually built for people who value privacy.",
+    ctaText:"No social media. No photos upfront. Charlotte keeps your details private until both people decide to meet. You might like it here."
+  }
+};
+
+let cur=0,ans=[];
+function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id);
+  el.style.animation='none';void el.offsetWidth;el.style.animation='';
+  el.classList.add('active');
+}
+function startQuiz(){cur=0;ans=[];renderQ();show('screen-question');}
+function renderQ(){
+  const q=Qs[cur];
+  document.getElementById('prog-label').textContent=`Question ${cur+1} of ${Qs.length}`;
+  document.getElementById('q-count').textContent=`${cur+1}/${Qs.length}`;
+  document.getElementById('prog-fill').style.width=(cur/Qs.length*100)+'%';
+  document.getElementById('q-text').textContent=q.text;
+  const bb=document.getElementById('back-btn');
+  bb.style.opacity=cur===0?'0.3':'1';
+  bb.style.pointerEvents=cur===0?'none':'auto';
+  const grid=document.getElementById('options-grid');
+  grid.innerHTML='';
+  const letters=['A','B','C','D'];
+  shuffle(q.opts).forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn opt-flash';
+    btn.style.animationDelay=(i*0.065)+'s';
+    btn.innerHTML=`<span class="opt-letter">${letters[i]}</span><span class="opt-text">${o.t}</span>`;
+    btn.onclick=()=>pick(o.type,btn,grid);
+    grid.appendChild(btn);
+  });
+}
+function pick(type,btn,grid){
+  grid.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  ans.push(type);
+  setTimeout(()=>{cur++;cur<Qs.length?renderQ():doLoading();},400);
+}
+function goBack(){if(cur===0)return;ans.pop();cur--;renderQ();}
+function doLoading(){
+  show('screen-loading');
+  const msgs=["Consulting your exes (spiritually)…","Checking your track record…","Reviewing the evidence…","Identifying your type…"];
+  let mi=0;
+  const el=document.getElementById('loading-msg');
+  el.style.transition='opacity 0.2s ease';
+  const iv=setInterval(()=>{
+    mi=(mi+1)%msgs.length;
+    el.style.opacity=0;
+    setTimeout(()=>{el.textContent=msgs[mi];el.style.opacity=1;},210);
+  },950);
+  setTimeout(()=>{clearInterval(iv);buildResult();},2800);
+}
+function buildResult(){
+  const counts={OT:0,GR:0,GH:0,PM:0,HM:0,TH:0,CO:0,SA:0};
+  ans.forEach(a=>{if(counts[a]!==undefined)counts[a]++;});
+  const winner=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  const r=R[winner];
+  document.getElementById('result-card').className='result-card '+r.cls;
+  document.getElementById('result-emoji').textContent=r.emoji;
+  document.getElementById('result-type').textContent=r.type;
+  document.getElementById('result-era').textContent=r.era;
+  document.getElementById('result-tagline').textContent=r.tagline;
+  document.getElementById('roast-text').textContent=r.roast;
+  document.getElementById('callout-title').textContent=r.ctaTitle;
+  document.getElementById('callout-text').textContent=r.ctaText;
+  const tg=document.getElementById('traits-grid');
+  tg.innerHTML='';
+  r.traits.forEach(t=>{
+    const d=document.createElement('div');
+    d.className='trait-pill';
+    d.innerHTML=`<span class="trait-icon">${t.i}</span><span>${t.t}</span>`;
+    tg.appendChild(d);
+  });
+  window._result={type:r.type,era:r.era,tagline:r.tagline};
+  show('screen-result');
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+function shareResult(){
+  const r=window._result;if(!r)return;
+  const txt=`I just found out I'm "${r.type}" — ${r.era} 💀\n\n"${r.tagline.slice(0,90)}…"\n\nFind yours → joinguava.co/partner-type.html`;
+  if(navigator.share){
+    navigator.share({title:'What Type of Partner Are You?',text:txt,url:'https://joinguava.co/partner-type.html'})
+      .catch(()=>navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied!')));
+  } else {
+    navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied to clipboard'));
+  }
+}
+function retake(){cur=0;ans=[];show('screen-intro');}
+</script>
+</body>
+</html>
