@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pink Job or Blue Job? — Guava</title>
+<meta property="og:title" content="Pink Job or Blue Job? — Guava">
+<meta property="og:description" content="Type any task. We'll tell you who's doing it — and why. Warning: results may start arguments.">
+<meta property="og:url" content="https://joinguava.co/pink-blue.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pink Job or Blue Job? — Guava">
+<meta name="twitter:description" content="Type any task. We'll tell you who's doing it — and why. Warning: results may start arguments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#fefefe;
+  --wine:#591e2e;
+  --green:#a2b930;
+  --coral:#fb7f8c;
+  --butter:#f8e9b1;
+  --mint:#ceeccf;
+  --blue:#4a90c4;
+  --pink:#fb7f8c;
+  --dark:#1a1118;
+  --muted:#7a6e70;
+  --bg:#f7f3ee;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23591e2e' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+
+.wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;align-items:center;}
+
+/* NAV */
+.nav{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;}
+.nav a{text-decoration:none;display:flex;align-items:center;gap:9px;}
+.nav img{width:36px;height:36px;object-fit:contain;}
+.nav-word{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--green);}
+.nav-tag{font-size:12px;color:var(--muted);font-style:italic;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:48px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:24px;background:linear-gradient(135deg,var(--pink),var(--blue));color:var(--white);}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,8vw,68px);font-weight:900;line-height:0.95;letter-spacing:-2px;color:var(--dark);margin-bottom:20px;}
+.hero h1 .pink{color:var(--pink);}
+.hero h1 .blue{color:var(--blue);}
+.hero-sub{font-size:17px;line-height:1.7;color:var(--muted);max-width:400px;margin:0 auto;font-weight:300;}
+
+/* INPUT */
+.input-card{background:var(--white);border-radius:24px;padding:40px;width:100%;border:1.5px solid rgba(162,185,48,0.2);box-shadow:0 4px 48px rgba(89,30,46,0.08);margin-bottom:24px;position:relative;overflow:hidden;}
+.input-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--butter),var(--blue));}
+.input-label{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.input-hint{font-size:13px;color:var(--muted);margin-bottom:20px;font-weight:300;font-style:italic;}
+textarea{width:100%;min-height:100px;background:#f9f6f2;border:1.5px solid rgba(162,185,48,0.2);border-radius:14px;padding:16px 18px;font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;color:var(--dark);resize:none;outline:none;transition:border-color 0.2s ease;}
+textarea:focus{border-color:var(--green);}
+textarea::placeholder{color:#bbb;font-style:italic;}
+.char-count{font-size:12px;color:var(--muted);text-align:right;margin-top:6px;margin-bottom:20px;}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--pink) 0%,var(--blue) 100%);color:var(--white);border:none;border-radius:14px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.22s ease;box-shadow:0 4px 20px rgba(89,30,46,0.2);display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(89,30,46,0.25);}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
+/* LOADING */
+.loading-state{display:none;text-align:center;padding:24px 0;}
+.loading-state.active{display:block;}
+.loading-dots{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
+.ld{width:12px;height:12px;border-radius:50%;animation:ldPulse 1.2s ease-in-out infinite;}
+.ld-pink{background:var(--pink);}
+.ld-butter{background:var(--butter);animation-delay:0.2s;}
+.ld-blue{background:var(--blue);animation-delay:0.4s;}
+@keyframes ldPulse{0%,100%{transform:scale(0.6);opacity:0.4;}50%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--muted);transition:opacity 0.2s ease;}
+
+/* RESULT */
+.result-section{display:none;width:100%;}
+.result-section.active{display:block;animation:fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* BIG VERDICT CARD - the color takeover */
+.verdict-card{
+  border-radius:24px;padding:52px 40px 44px;
+  text-align:center;margin-bottom:20px;
+  position:relative;overflow:hidden;
+  transition:all 0.3s ease;
+}
+.verdict-card::after{
+  content:'';position:absolute;
+  top:-80px;right:-80px;
+  width:240px;height:240px;
+  border-radius:50%;opacity:0.15;
+}
+.verdict-tag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-weight:500;font-family:'DM Sans',sans-serif;margin-bottom:16px;opacity:0.8;}
+.verdict-emoji{font-size:56px;margin-bottom:16px;display:block;animation:popIn 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;}
+@keyframes popIn{from{transform:scale(0.2);opacity:0;}to{transform:scale(1);opacity:1;}}
+.verdict-type{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:10px;}
+.verdict-reason{font-size:16px;line-height:1.7;max-width:420px;margin:0 auto;opacity:0.9;font-weight:300;}
+
+/* PINK theme */
+.verdict-pink{background:var(--pink);color:var(--white);}
+.verdict-pink::after{background:#fff;}
+
+/* BLUE theme */
+.verdict-blue{background:var(--blue);color:var(--white);}
+.verdict-blue::after{background:#fff;}
+
+/* CONTESTED theme */
+.verdict-contested{background:var(--butter);color:#3a2a00;}
+.verdict-contested .verdict-type{color:var(--wine);}
+.verdict-contested .verdict-reason{color:#5a4500;}
+.verdict-contested::after{background:var(--wine);}
+
+/* SPLIT BAR */
+.split-card{background:var(--white);border-radius:24px;padding:28px 36px;margin-bottom:20px;border:1.5px solid rgba(162,185,48,0.15);box-shadow:0 2px 32px rgba(89,30,46,0.05);}
+.split-labels{display:flex;justify-content:space-between;margin-bottom:10px;}
+.split-label-pink{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--pink);display:flex;align-items:center;gap:6px;}
+.split-label-blue{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px;}
+.split-track{height:28px;background:#f0ebe4;border-radius:100px;overflow:hidden;position:relative;margin-bottom:8px;}
+.split-fill-pink{height:100%;border-radius:100px 0 0 100px;background:var(--pink);position:absolute;left:0;top:0;width:0%;transition:width 1.3s cubic-bezier(0.4,0,0.2,1);}
+.split-fill-blue{height:100%;border-radius:0 100px 100px 0;background:var(--blue);position:absolute;right:0;top:0;width:0%;transition:width 1.3s cubic-bezier(0.4,0,0.2,1);}
+.split-pct{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;}
+
+/* BREAKDOWN */
+.breakdown-card{background:var(--white);border-radius:24px;padding:32px 36px;margin-bottom:20px;border:1.5px solid rgba(162,185,48,0.15);box-shadow:0 2px 32px rgba(89,30,46,0.05);}
+.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;font-family:'DM Sans',sans-serif;margin-bottom:12px;}
+.breakdown-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;line-height:1.65;color:var(--dark);}
+
+/* FOLLOW UP */
+.followup-card{background:var(--butter);border-radius:24px;padding:32px 36px;border:1.5px solid rgba(248,233,177,0.8);margin-bottom:20px;position:relative;overflow:hidden;}
+.followup-card::after{content:'👀';position:absolute;right:24px;top:20px;font-size:28px;opacity:0.3;}
+.followup-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--wine);font-weight:500;font-family:'DM Sans',sans-serif;margin-bottom:10px;}
+.followup-q{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1.5;color:var(--dark);margin-bottom:20px;}
+textarea.followup-input{background:rgba(255,255,255,0.75);border-color:rgba(89,30,46,0.2);min-height:80px;margin-bottom:12px;}
+textarea.followup-input:focus{border-color:var(--wine);}
+.btn-followup{background:var(--wine);color:var(--white);border:none;border-radius:12px;padding:14px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s ease;box-shadow:0 3px 12px rgba(89,30,46,0.2);}
+.btn-followup:hover{background:#6e2438;transform:translateY(-1px);}
+.btn-followup:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.followup-response{display:none;margin-top:16px;padding:16px;background:rgba(255,255,255,0.8);border-radius:12px;font-family:'Playfair Display',serif;font-size:16px;line-height:1.65;color:var(--dark);}
+.followup-response.active{display:block;animation:fadeUp 0.4s ease forwards;}
+
+/* CTA */
+.guava-cta{background:var(--white);border-radius:24px;padding:32px 36px;border:1.5px solid rgba(162,185,48,0.2);box-shadow:0 2px 32px rgba(89,30,46,0.05);margin-bottom:20px;display:flex;align-items:center;gap:20px;}
+.cta-icon{font-size:40px;flex-shrink:0;}
+.cta-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.cta-text{font-size:14px;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:14px;}
+.btn-cta{background:var(--wine);color:var(--white);border:none;border-radius:11px;padding:12px 24px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s ease;text-decoration:none;display:inline-block;box-shadow:0 3px 12px rgba(89,30,46,0.2);}
+.btn-cta:hover{background:#6e2438;transform:translateY(-1px);}
+
+/* ACTIONS */
+.result-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;}
+.btn-share{background:#f9f6f2;color:var(--wine);border:1.5px solid rgba(89,30,46,0.2);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.18s ease;display:flex;align-items:center;gap:7px;width:100%;max-width:380px;justify-content:center;}
+.btn-share:hover{border-color:var(--wine);background:var(--white);}
+.btn-again{font-size:14px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-decoration-color:rgba(122,110,112,0.3);transition:color 0.18s;font-weight:300;}
+.btn-again:hover{color:var(--wine);}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:var(--white);padding:14px 28px;border-radius:100px;font-size:14px;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);z-index:999;white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:580px){
+  .hero h1{font-size:44px;}
+  .input-card,.breakdown-card,.followup-card,.guava-cta{padding:28px 22px;}
+  .verdict-card{padding:36px 24px 32px;}
+  .split-card{padding:24px 22px;}
+  .guava-cta{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="nav">
+    <a href="index.html">
+      <img src="logo.png" alt="Guava">
+      <span class="nav-word">Guava</span>
+    </a>
+    <span class="nav-tag">settling debates since 2025</span>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">⚖️ Household & Relationship Division</div>
+    <h1><span class="pink">Pink</span> Job<br>or <span class="blue">Blue</span> Job?</h1>
+    <p class="hero-sub">Type any task. We'll tell you who's doing it — and why. Warning: results may start arguments.</p>
+  </div>
+
+  <div class="input-card" id="input-card">
+    <div class="input-label">What's the task?</div>
+    <div class="input-hint">e.g. killing the spider, planning the vacation, remembering the anniversary, taking out the trash, crying at the movie…</div>
+    <textarea id="main-input" placeholder="Type any household task, relationship job, or domestic duty…" maxlength="300" oninput="updateChar()"></textarea>
+    <div class="char-count"><span id="char-num">0</span>/300</div>
+    <button class="btn-submit" id="submit-btn" onclick="analyze()">
+      <span id="btn-label">⚖️ Classify This Task</span>
+    </button>
+    <div class="loading-state" id="loading-state">
+      <div class="loading-dots">
+        <div class="ld ld-pink"></div>
+        <div class="ld ld-butter"></div>
+        <div class="ld ld-blue"></div>
+      </div>
+      <div class="loading-text" id="loading-text">Consulting the household bylaws…</div>
+    </div>
+  </div>
+
+  <div class="result-section" id="result-section">
+
+    <div class="verdict-card" id="verdict-card">
+      <div class="verdict-tag">Official Classification</div>
+      <span class="verdict-emoji" id="verdict-emoji"></span>
+      <div class="verdict-type" id="verdict-type"></div>
+      <div class="verdict-reason" id="verdict-reason"></div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-labels">
+        <div class="split-label-pink">💗 Pink energy</div>
+        <div class="split-label-blue">💙 Blue energy</div>
+      </div>
+      <div class="split-track">
+        <div class="split-fill-pink" id="split-pink"></div>
+        <div class="split-fill-blue" id="split-blue"></div>
+      </div>
+      <div class="split-pct">
+        <span id="pct-pink">0%</span>
+        <span id="pct-blue">0%</span>
+      </div>
+    </div>
+
+    <div class="breakdown-card">
+      <div class="eyebrow" style="color:var(--green);">The Breakdown</div>
+      <div class="breakdown-text" id="breakdown-text"></div>
+    </div>
+
+    <div class="followup-card">
+      <div class="followup-label">One more thing…</div>
+      <div class="followup-q" id="followup-q"></div>
+      <textarea class="followup-input" id="followup-input" placeholder="Be honest." maxlength="300"></textarea>
+      <button class="btn-followup" id="followup-btn" onclick="submitFollowup()">Tell me →</button>
+      <div class="followup-response" id="followup-response"></div>
+    </div>
+
+    <div class="guava-cta">
+      <div class="cta-icon" id="cta-icon">🍃</div>
+      <div class="cta-body">
+        <div class="cta-title" id="cta-title">Tired of negotiating the job list?</div>
+        <div class="cta-text" id="cta-text">Guava matches you with someone whose idea of a relationship actually matches yours. One match. One week. Meet in person.</div>
+        <a href="https://app.joinguava.co/auth" class="btn-cta" target="_blank">Try Guava →</a>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-share" onclick="shareResult()">📤 Share the verdict</button>
+      <button class="btn-again" onclick="tryAgain()">Submit another task</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const LOADING_MSGS=[
+  "Consulting the household bylaws…",
+  "Reviewing 50 years of domestic disputes…",
+  "Checking the relationship constitution…",
+  "Deliberating with the council…",
+  "Analyzing the gender dynamics…"
+];
+
+let currentInput='',currentVerdict='',currentFQ='';
+
+function updateChar(){
+  document.getElementById('char-num').textContent=document.getElementById('main-input').value.length;
+}
+
+async function analyze(){
+  const input=document.getElementById('main-input').value.trim();
+  if(!input||input.length<3){showToast('Type a task first.');return;}
+  currentInput=input;
+  document.getElementById('submit-btn').disabled=true;
+  document.getElementById('btn-label').textContent='⏳ Classifying…';
+  document.getElementById('loading-state').classList.add('active');
+  document.getElementById('result-section').classList.remove('active');
+  document.getElementById('input-card').scrollIntoView({behavior:'smooth',block:'center'});
+
+  let mi=0;
+  const lel=document.getElementById('loading-text');
+  lel.style.transition='opacity 0.2s ease';
+  const liv=setInterval(()=>{
+    mi=(mi+1)%LOADING_MSGS.length;
+    lel.style.opacity=0;
+    setTimeout(()=>{lel.textContent=LOADING_MSGS[mi];lel.style.opacity=1;},220);
+  },1000);
+
+  try{
+    const res=await fetch('/api/proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:900,
+        system:`You are the Pink Job or Blue Job classifier — a hilariously honest judge of domestic and relationship tasks.
+
+CLASSIFICATION RULES:
+- "Pink Job": tasks historically or culturally associated with women/feminine energy (emotional labor, planning, remembering dates, decorating, buying gifts, noticing the house needs cleaning, crying appropriately)
+- "Blue Job": tasks historically or culturally associated with men/masculine energy (physical tasks, fixing things, killing bugs, taking out trash, grilling, assembling furniture, pretending to know about cars)
+- "Contested": tasks that are genuinely 50/50, actively debated, or where the expectation has shifted so dramatically it's now a relationship argument waiting to happen
+
+IMPORTANT: You are NOT enforcing these norms — you are ROASTING them. When something is a "Blue Job" say so with the energy of someone who finds the whole thing absurd. When something is contested, celebrate the chaos. The humor comes from acknowledging these stereotypes exist while gently exposing how ridiculous they are.
+
+NEVER be mean about either gender. The joke is always about the DYNAMIC, not the people.
+
+Use Gen Z/millennial voice: "bestie", "the audacity", "no notes", "understood the assignment", "living rent free", "main character", "era", "not a single thought", "ate".
+
+WORD LIMITS: verdict_reason MAX 20 words. breakdown MAX 25 words. followup_question MAX 15 words. cta_context MAX 20 words.
+
+You MUST respond ONLY with raw JSON. Start with { end with }. Nothing else.
+{
+  "verdict": "pink" | "blue" | "contested",
+  "emoji": "<one perfect emoji for this task>",
+  "verdict_title": "<e.g. 'Pink Job.' | 'Blue Job.' | 'Contested Territory.'>",
+  "verdict_reason": "<MAX 20 words. Funny one-liner explaining the classification.>",
+  "pink_score": <0-100, how pink this task is>,
+  "blue_score": <0-100, how blue this task is — pink + blue should roughly add to 100>,
+  "breakdown": "<MAX 25 words. The real breakdown — why this task got classified this way. A little savage.>",
+  "followup_question": "<MAX 15 words. Pointed question about their relationship dynamic around this task.>",
+  "cta_context": "<MAX 20 words. Funny connection to why Guava solves this.>"
+}`,
+        messages:[{role:'user',content:`The task: ${input}`}]
+      })
+    });
+
+    clearInterval(liv);
+    if(!res.ok) throw new Error(`API error: ${res.status}`);
+    const data=await res.json();
+    const raw=data.content[0].text;
+    const jsonMatch=raw.match(/\{[\s\S]*\}/);
+    if(!jsonMatch) throw new Error('No JSON in response');
+    displayResult(JSON.parse(jsonMatch[0]));
+
+  }catch(e){
+    clearInterval(liv);
+    console.error(e);
+    if(e.message.includes('401')) showToast('API key issue — check Vercel settings.');
+    else if(e.message.includes('429')) showToast('The council is overwhelmed — try again shortly.');
+    else showToast('Something went wrong — please try again.');
+    document.getElementById('submit-btn').disabled=false;
+    document.getElementById('btn-label').textContent='⚖️ Classify This Task';
+    document.getElementById('loading-state').classList.remove('active');
+  }
+}
+
+function displayResult(r){
+  currentVerdict=r.verdict;
+  currentFQ=r.followup_question;
+
+  document.getElementById('loading-state').classList.remove('active');
+
+  const vc=document.getElementById('verdict-card');
+  vc.className='verdict-card';
+  if(r.verdict==='pink') vc.classList.add('verdict-pink');
+  else if(r.verdict==='blue') vc.classList.add('verdict-blue');
+  else vc.classList.add('verdict-contested');
+
+  document.getElementById('verdict-emoji').textContent=r.emoji;
+  document.getElementById('verdict-type').textContent=r.verdict_title;
+  document.getElementById('verdict-reason').textContent=r.verdict_reason;
+
+  const pink=Math.min(100,Math.max(0,r.pink_score));
+  const blue=Math.min(100,Math.max(0,r.blue_score));
+  setTimeout(()=>{
+    document.getElementById('split-pink').style.width=pink+'%';
+    document.getElementById('split-blue').style.width=blue+'%';
+  },200);
+  document.getElementById('pct-pink').textContent=pink+'% pink';
+  document.getElementById('pct-blue').textContent=blue+'% blue';
+
+  document.getElementById('breakdown-text').textContent=r.breakdown;
+  document.getElementById('followup-q').textContent=r.followup_question;
+  document.getElementById('followup-input').value='';
+  document.getElementById('followup-response').classList.remove('active');
+  document.getElementById('followup-response').textContent='';
+  document.getElementById('followup-btn').disabled=false;
+  document.getElementById('followup-btn').textContent='Tell me →';
+
+  if(r.verdict==='contested'){
+    document.getElementById('cta-icon').textContent='🚨';
+    document.getElementById('cta-title').textContent='This argument has no winner. Guava might help.';
+  } else {
+    document.getElementById('cta-icon').textContent='🍃';
+    document.getElementById('cta-title').textContent='Tired of negotiating the job list?';
+  }
+  document.getElementById('cta-text').textContent=r.cta_context||'Guava matches you with someone whose idea of a relationship actually matches yours. One match. One week.';
+
+  window._result={verdict:r.verdict,title:r.verdict_title,input:currentInput};
+  document.getElementById('result-section').classList.add('active');
+  document.getElementById('submit-btn').disabled=false;
+  document.getElementById('btn-label').textContent='⚖️ Classify This Task';
+  setTimeout(()=>document.getElementById('verdict-card').scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
+async function submitFollowup(){
+  const ans=document.getElementById('followup-input').value.trim();
+  if(!ans||ans.length<3){showToast('Give us something.');return;}
+  document.getElementById('followup-btn').disabled=true;
+  document.getElementById('followup-btn').textContent='Processing…';
+  try{
+    const res=await fetch('/api/proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:150,
+        system:'MAX 20 WORDS total. One punchy reaction to their answer about this household/relationship task. Funny, a little savage, ends with humor. Plain text only.',
+        messages:[{role:'user',content:`Task: ${currentInput}\nVerdict: ${currentVerdict}\nFollow-up question: ${currentFQ}\nTheir answer: ${ans}`}]
+      })
+    });
+    if(!res.ok) throw new Error(res.status);
+    const data=await res.json();
+    const txt=data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    const el=document.getElementById('followup-response');
+    el.textContent=txt;el.classList.add('active');
+    document.getElementById('followup-btn').textContent='✓ Noted';
+  }catch(e){
+    showToast('Try again.');
+    document.getElementById('followup-btn').disabled=false;
+    document.getElementById('followup-btn').textContent='Tell me →';
+  }
+}
+
+function tryAgain(){
+  document.getElementById('main-input').value='';
+  document.getElementById('char-num').textContent='0';
+  document.getElementById('result-section').classList.remove('active');
+  const sp=document.getElementById('split-pink');
+  const sb=document.getElementById('split-blue');
+  sp.style.transition='none';sb.style.transition='none';
+  sp.style.width='0%';sb.style.width='0%';
+  setTimeout(()=>{
+    sp.style.transition='width 1.3s cubic-bezier(0.4,0,0.2,1)';
+    sb.style.transition='width 1.3s cubic-bezier(0.4,0,0.2,1)';
+  },50);
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>document.getElementById('main-input').focus(),400);
+}
+
+function shareResult(){
+  const r=window._result;if(!r)return;
+  const txt=`I just classified "${r.input}" on the Pink Job or Blue Job tool and got "${r.title}" 😭\n\nClassify yours → joinguava.co/pink-blue.html`;
+  if(navigator.share){
+    navigator.share({title:'Pink Job or Blue Job?',text:txt,url:'https://joinguava.co/pink-blue.html'})
+      .catch(()=>navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied!')));
+  } else {
+    navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied to clipboard'));
+  }
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),5000);
+}
+</script>
+</body>
+</html>
