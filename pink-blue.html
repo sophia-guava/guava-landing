@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pink Job or Blue Job?</title>
-<meta property="og:title" content="Pink Job or Blue Job?">
+<title>Pink Job or Blue Job? — Guava</title>
+<meta property="og:title" content="Pink Job or Blue Job? — Guava">
 <meta property="og:description" content="Type any task. We'll tell you who's doing it — and why. Warning: results may start arguments.">
 <meta property="og:url" content="https://joinguava.co/pink-blue.html">
 <meta property="og:type" content="website">
@@ -126,7 +126,6 @@ textarea::placeholder{color:#bbb;font-style:italic;}
 .breakdown-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;line-height:1.65;color:var(--dark);}
 
 
-
 /* CTA */
 .guava-cta{background:var(--white);border-radius:24px;padding:32px 36px;border:1.5px solid rgba(162,185,48,0.2);box-shadow:0 2px 32px rgba(89,30,46,0.05);margin-bottom:20px;display:flex;align-items:center;gap:20px;}
 .cta-icon{font-size:40px;flex-shrink:0;}
@@ -167,14 +166,14 @@ textarea::placeholder{color:#bbb;font-style:italic;}
   </nav>
 
   <div class="hero">
-    <div class="hero-badge">⚖️ Who Does What… and Who Thinks They Do More</div>
+    <div class="hero-badge">⚖️ Household & Relationship Division</div>
     <h1><span class="pink">Pink</span> Job<br>or <span class="blue">Blue</span> Job?</h1>
     <p class="hero-sub">Type any task. We'll tell you who's doing it — and why. Warning: results may start arguments.</p>
   </div>
 
   <div class="input-card" id="input-card">
     <div class="input-label">What's the dynamic?</div>
-    <div class="input-hint">e.g. who texts first, who plans the date, who catches feelings first, who apologizes first, who kills the spider…</div>
+    <div class="input-hint">e.g. who texts first, who plans the date, who catches feelings first, who apologizes, who pays…</div>
     <textarea id="main-input" placeholder="Type any dating or relationship dynamic…" maxlength="300" oninput="updateChar()"></textarea>
     <div class="char-count"><span id="char-num">0</span>/300</div>
     <button class="btn-submit" id="submit-btn" onclick="analyze()">
@@ -218,8 +217,6 @@ textarea::placeholder{color:#bbb;font-style:italic;}
       <div class="eyebrow" style="color:var(--green);">The Breakdown</div>
       <div class="breakdown-text" id="breakdown-text"></div>
     </div>
-
-    
 
     <div class="guava-cta">
       <div class="cta-icon" id="cta-icon">🍃</div>
@@ -280,31 +277,31 @@ async function analyze(){
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:900,
-        system:`You are the Pink Job or Blue Job classifier — a hilariously honest judge of relationship tasks and dating dynamics.
+        system:`You are the Pink Job or Blue Job classifier — a hilariously honest judge of dating and relationship dynamics.
 
-CONTEXT: This is about DATING and RELATIONSHIPS, not marriage or housework. Think: who texts first, who plans the date, who says I love you first, who brings up the talk, who apologizes first, who stalks their ex's instagram, who catches feelings faster, who pretends not to care.
+CONTEXT: This is about DATING and RELATIONSHIPS only. Think: who texts first, who plans the date, who says I love you first, who brings up the talk, who apologizes first, who catches feelings faster, who pretends not to care, who stalks the ex.
 
 CLASSIFICATION RULES:
-- "Pink Job": tasks culturally defaulting to women/feminine energy in dating — catching feelings first, planning the anniversary, remembering what they wore on date one, noticing the vibe is off, apologizing even when right, keeping the relationship alive through sheer force of will
-- "Blue Job": tasks culturally defaulting to men/masculine energy in dating — making the first move, paying on dates, killing the spider, pretending to be unbothered, assembling the IKEA furniture and not reading instructions, driving everywhere
-- "Contested": genuinely 50/50 in modern dating, OR tasks so debated they start arguments in comment sections
+- "pink": culturally defaults to women/feminine energy in dating — catching feelings first, planning everything, remembering every detail, noticing the vibe shifted, apologizing even when right
+- "blue": culturally defaults to men/masculine energy in dating — making the first move, paying, pretending to be unbothered, driving everywhere, refusing to ask for directions emotionally
+- "contested": genuinely 50/50 in modern dating OR so debated it starts comment section wars
 
-IMPORTANT: You are NOT enforcing these norms — you are ROASTING them with Gen Z wit. The humor is exposing how unhinged dating dynamics are. Be witty, be specific, be unexpected. Subvert expectations when possible — if something seems like a blue job, hit them with the pink verdict they weren't ready for.
+IMPORTANT: You are ROASTING the dynamic not enforcing it. Be witty and unexpected. Subvert expectations. If something seems obviously blue, consider making it pink just to chaos.
 
-TONE: Sharp, funny, zero fluff. Think: the most entertaining person in the group chat. Phrases like "bestie no", "the audacity", "understood the assignment", "not a single thought", "living rent free", "ate and left no crumbs", "the villain arc", "main character behavior", "this is giving", "core memory", "we are not the same".
+TONE: Sharp, Gen Z/millennial, zero fluff. Group chat energy. Use: "bestie no", "the audacity", "understood the assignment", "living rent free", "ate and left no crumbs", "villain arc", "main character behavior", "this is giving", "we are not the same", "no thoughts head empty".
 
-WORD LIMITS — hard: verdict_reason MAX 18 words. breakdown MAX 22 words. cta_context MAX 18 words.
+HARD WORD LIMITS: verdict_reason MAX 18 words. breakdown MAX 22 words. cta_context MAX 18 words.
 
-Respond ONLY with raw JSON. Start { end }. Nothing else.
+Respond ONLY with raw JSON starting { ending }. Nothing else.
 {
   "verdict": "pink" | "blue" | "contested",
   "emoji": "<one perfect emoji>",
-  "verdict_title": "<e.g. 'Pink Job.' | 'Blue Job.' | 'Contested Territory.'>",
-  "verdict_reason": "<MAX 18 words. Witty, specific, unexpected one-liner.>",
+  "verdict_title": "<e.g. Pink Job. | Blue Job. | Contested Territory.>",
+  "verdict_reason": "<MAX 18 words. Witty, specific, unexpected.>",
   "pink_score": <0-100>,
   "blue_score": <0-100>,
-  "breakdown": "<MAX 22 words. Sharp breakdown, a little unhinged, very funny.>",
-  "cta_context": "<MAX 18 words. Funny tie-in to Guava solving this dynamic.>"
+  "breakdown": "<MAX 22 words. Sharp, unhinged, very funny.>",
+  "cta_context": "<MAX 18 words. Funny Guava tie-in.>"
 }`,
         messages:[{role:'user',content:`The task: ${input}`}]
       })
@@ -357,7 +354,6 @@ function displayResult(r){
 
   document.getElementById('breakdown-text').textContent=r.breakdown;
 
-
   if(r.verdict==='contested'){
     document.getElementById('cta-icon').textContent='🚨';
     document.getElementById('cta-title').textContent='This argument has no winner. Guava might help.';
@@ -374,31 +370,6 @@ function displayResult(r){
   setTimeout(()=>document.getElementById('verdict-card').scrollIntoView({behavior:'smooth',block:'start'}),200);
 }
 
-  document.getElementById('followup-btn').disabled=true;
-  document.getElementById('followup-btn').textContent='Processing…';
-  try{
-    const res=await fetch('/api/proxy',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:150,
-        system:'MAX 20 WORDS total. One punchy reaction to their answer about this household/relationship task. Funny, a little savage, ends with humor. Plain text only.',
-        messages:[{role:'user',content:`Task: ${currentInput}\nVerdict: ${currentVerdict}\nFollow-up question: ${currentFQ}\nTheir answer: ${ans}`}]
-      })
-    });
-    if(!res.ok) throw new Error(res.status);
-    const data=await res.json();
-    const txt=data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const el=document.getElementById('followup-response');
-    el.textContent=txt;el.classList.add('active');
-    document.getElementById('followup-btn').textContent='✓ Noted';
-  }catch(e){
-    showToast('Try again.');
-    document.getElementById('followup-btn').disabled=false;
-    document.getElementById('followup-btn').textContent='Tell me →';
-  }
-}
 
 function tryAgain(){
   document.getElementById('main-input').value='';
