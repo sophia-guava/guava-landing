@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Bare Minimum Report — Guava</title>
-<meta property="og:title" content="The Bare Minimum Report — Guava">
+<title>The Bare Minimum Chronicles — Guava</title>
+<meta property="og:title" content="The Bare Minimum Chronicles">
 <meta property="og:description" content="Did they do something sweet — or is that just called being a decent human? Submit it. We'll tell you the truth.">
 <meta property="og:url" content="https://joinguava.co/bare-minimum.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Bare Minimum Report — Guava">
+<meta name="twitter:title" content="The Bare Minimum Chronicles">
 <meta name="twitter:description" content="Did they do something sweet — or is that just called being a decent human?">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -238,43 +238,6 @@ textarea::placeholder{color:#bbb;font-style:italic;}
 }
 .comparison-sub{font-size:14px;line-height:1.7;font-weight:300;}
 
-/* FOLLOW UP */
-.followup-card{
-  background:linear-gradient(135deg,#fde8ea,#faefc0);
-  border-radius:24px;padding:32px 36px;
-  border:1.5px solid rgba(251,127,140,0.25);
-  margin-bottom:20px;position:relative;overflow:hidden;
-}
-.followup-card::after{content:'👀';position:absolute;right:24px;top:24px;font-size:28px;opacity:0.3;}
-.followup-label{
-  font-size:11px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--wine);font-weight:500;
-  font-family:'Playfair Display',serif;margin-bottom:10px;
-}
-.followup-q{
-  font-family:'Playfair Display',serif;
-  font-size:18px;font-weight:700;line-height:1.5;color:var(--dark);margin-bottom:20px;
-}
-textarea.followup-input{
-  background:rgba(255,255,255,0.7);
-  border-color:rgba(251,127,140,0.3);min-height:80px;margin-bottom:12px;
-}
-textarea.followup-input:focus{border-color:var(--coral);}
-.btn-followup{
-  background:var(--wine);color:var(--white);border:none;
-  border-radius:12px;padding:14px 28px;font-size:14px;font-weight:500;
-  cursor:pointer;font-family:'DM Sans',sans-serif;
-  transition:all 0.2s ease;box-shadow:0 3px 12px rgba(89,30,46,0.2);
-}
-.btn-followup:hover{background:#6e2438;transform:translateY(-1px);}
-.btn-followup:disabled{background:#c4a4aa;cursor:not-allowed;transform:none;}
-.followup-response{
-  display:none;margin-top:16px;padding:16px;
-  background:rgba(255,255,255,0.8);border-radius:12px;
-  font-family:'Playfair Display',serif;
-  font-size:16px;line-height:1.65;color:var(--dark);
-}
-.followup-response.active{display:block;animation:fadeUp 0.4s ease forwards;}
 
 /* GUAVA CTA */
 .guava-cta{
@@ -349,7 +312,7 @@ textarea.followup-input:focus{border-color:var(--coral);}
   <!-- HERO -->
   <div class="hero">
     <div class="hero-badge">📊 Relationship Standards Division</div>
-    <h1>The Bare<br><em>Minimum</em><br>Report</h1>
+    <h1>The Bare Minimum <em>Chronicles</em></h1>
     <p class="hero-sub">They did something. You're impressed. But should you be? Submit it. We'll let you know if the bar is on the floor.</p>
   </div>
 
@@ -408,15 +371,6 @@ textarea.followup-input:focus{border-color:var(--coral);}
       <div class="comparison-label" id="comparison-label"></div>
       <div class="comparison-text" id="comparison-text"></div>
       <div class="comparison-sub" id="comparison-sub"></div>
-    </div>
-
-    <!-- FOLLOW UP -->
-    <div class="followup-card">
-      <div class="followup-label">One more question…</div>
-      <div class="followup-q" id="followup-q"></div>
-      <textarea class="followup-input" id="followup-input" placeholder="Be honest." maxlength="300"></textarea>
-      <button class="btn-followup" id="followup-btn" onclick="submitFollowup()">Tell me →</button>
-      <div class="followup-response" id="followup-response"></div>
     </div>
 
     <!-- GUAVA CTA -->
@@ -508,7 +462,7 @@ CRITICAL RULES:
 - If input is vague, assume the most mediocre, dating-related interpretation.
 - You are savage about low bars but genuinely warm about high ones.
 - Roast the SITUATION and STANDARDS, never the person submitting.
-- Use Gen Z/millennial voice naturally: "bestie", "the audacity", "living rent free", "era", "understood the assignment", "not a single thought", "core memory", "main character", "ate", "slay".
+- Tone is pure Gen Z/millennial group chat. Use freely: "bestie", "the audacity", "living rent free", "era", "understood the assignment", "not a single thought", "core memory", "main character energy", "ate and left no crumbs", "we are not the same", "this is giving", "villain arc", "no notes", "it's giving".
 - WORD LIMITS: verdict MAX 20 words. followup_question MAX 15 words.
 
 Respond ONLY with a raw JSON object. Start with { end with }. Nothing else.
@@ -614,36 +568,6 @@ function displayResult(r){
   setTimeout(()=>document.getElementById('bar-container').scrollIntoView({behavior:'smooth',block:'start'}),200);
 }
 
-async function submitFollowup(){
-  const answer = document.getElementById('followup-input').value.trim();
-  if(!answer||answer.length<3){showToast('Give us something.');return;}
-  document.getElementById('followup-btn').disabled=true;
-  document.getElementById('followup-btn').textContent='Processing…';
-
-  try{
-    const res = await fetch('/api/proxy',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:200,
-        system:`You are The Bare Minimum Report follow-up judge. MAX 20 WORDS total in your response. One punchy reaction to their answer. Funny, a little savage, ends with a tiny shred of hope or humor. No italics. Plain text only.`,
-        messages:[{role:'user',content:`Original submission: ${currentInput}\nBar score: ${currentScore}/100\nFollow-up question: ${currentFollowupQ}\nTheir answer: ${answer}`}]
-      })
-    });
-    if(!res.ok) throw new Error(`${res.status}`);
-    const data = await res.json();
-    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const el = document.getElementById('followup-response');
-    el.textContent=text;
-    el.classList.add('active');
-    document.getElementById('followup-btn').textContent='✓ Noted';
-  }catch(e){
-    showToast('Try again.');
-    document.getElementById('followup-btn').disabled=false;
-    document.getElementById('followup-btn').textContent='Tell me →';
-  }
-}
 
 function tryAgain(){
   document.getElementById('main-input').value='';
@@ -663,7 +587,7 @@ function tryAgain(){
 function shareResult(){
   const r=window._result;
   if(!r) return;
-  const txt=`I just ran "${r.input.slice(0,60)}${r.input.length>60?'…':''}" through The Bare Minimum Report and got ${r.score}/100 — "${r.label}" 💀\n\nCheck yours → joinguava.co/bare-minimum.html`;
+  const txt=`I just ran "${r.input.slice(0,60)}${r.input.length>60?'…':''}" through The Bare Minimum Chronicles and got ${r.score}/100 — "${r.label}" 💀\n\nCheck yours → joinguava.co/bare-minimum.html`;
   if(navigator.share){
     navigator.share({title:'The Bare Minimum Report',text:txt,url:'https://joinguava.co/bare-minimum.html'})
       .catch(()=>navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied!')));
