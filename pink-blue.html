@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pink Job or Blue Job? — Guava</title>
-<meta property="og:title" content="Pink Job or Blue Job? — Guava">
+<title>Pink Job or Blue Job?</title>
+<meta property="og:title" content="Pink Job or Blue Job?">
 <meta property="og:description" content="Type any task. We'll tell you who's doing it — and why. Warning: results may start arguments.">
 <meta property="og:url" content="https://joinguava.co/pink-blue.html">
 <meta property="og:type" content="website">
@@ -57,8 +57,8 @@ textarea{width:100%;min-height:100px;background:#f9f6f2;border:1.5px solid rgba(
 textarea:focus{border-color:var(--green);}
 textarea::placeholder{color:#bbb;font-style:italic;}
 .char-count{font-size:12px;color:var(--muted);text-align:right;margin-top:6px;margin-bottom:20px;}
-.btn-submit{width:100%;background:linear-gradient(135deg,var(--pink) 0%,var(--blue) 100%);color:var(--white);border:none;border-radius:14px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.22s ease;box-shadow:0 4px 20px rgba(89,30,46,0.2);display:flex;align-items:center;justify-content:center;gap:10px;}
-.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(89,30,46,0.25);}
+.btn-submit{width:100%;background:var(--wine);color:var(--white);border:none;border-radius:14px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.22s ease;box-shadow:0 4px 20px rgba(89,30,46,0.25);display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-submit:hover{background:#6e2438;transform:translateY(-2px);box-shadow:0 8px 28px rgba(89,30,46,0.3);}
 .btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
 
 /* LOADING */
@@ -125,18 +125,7 @@ textarea::placeholder{color:#bbb;font-style:italic;}
 .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;font-family:'DM Sans',sans-serif;margin-bottom:12px;}
 .breakdown-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;line-height:1.65;color:var(--dark);}
 
-/* FOLLOW UP */
-.followup-card{background:var(--butter);border-radius:24px;padding:32px 36px;border:1.5px solid rgba(248,233,177,0.8);margin-bottom:20px;position:relative;overflow:hidden;}
-.followup-card::after{content:'👀';position:absolute;right:24px;top:20px;font-size:28px;opacity:0.3;}
-.followup-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--wine);font-weight:500;font-family:'DM Sans',sans-serif;margin-bottom:10px;}
-.followup-q{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1.5;color:var(--dark);margin-bottom:20px;}
-textarea.followup-input{background:rgba(255,255,255,0.75);border-color:rgba(89,30,46,0.2);min-height:80px;margin-bottom:12px;}
-textarea.followup-input:focus{border-color:var(--wine);}
-.btn-followup{background:var(--wine);color:var(--white);border:none;border-radius:12px;padding:14px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s ease;box-shadow:0 3px 12px rgba(89,30,46,0.2);}
-.btn-followup:hover{background:#6e2438;transform:translateY(-1px);}
-.btn-followup:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
-.followup-response{display:none;margin-top:16px;padding:16px;background:rgba(255,255,255,0.8);border-radius:12px;font-family:'Playfair Display',serif;font-size:16px;line-height:1.65;color:var(--dark);}
-.followup-response.active{display:block;animation:fadeUp 0.4s ease forwards;}
+
 
 /* CTA */
 .guava-cta{background:var(--white);border-radius:24px;padding:32px 36px;border:1.5px solid rgba(162,185,48,0.2);box-shadow:0 2px 32px rgba(89,30,46,0.05);margin-bottom:20px;display:flex;align-items:center;gap:20px;}
@@ -184,9 +173,9 @@ textarea.followup-input:focus{border-color:var(--wine);}
   </div>
 
   <div class="input-card" id="input-card">
-    <div class="input-label">What's the task?</div>
-    <div class="input-hint">e.g. killing the spider, planning the vacation, remembering the anniversary, taking out the trash, crying at the movie…</div>
-    <textarea id="main-input" placeholder="Type any household task, relationship job, or domestic duty…" maxlength="300" oninput="updateChar()"></textarea>
+    <div class="input-label">What's the dynamic?</div>
+    <div class="input-hint">e.g. who texts first, who plans the date, who catches feelings first, who apologizes first, who kills the spider…</div>
+    <textarea id="main-input" placeholder="Type any dating or relationship dynamic…" maxlength="300" oninput="updateChar()"></textarea>
     <div class="char-count"><span id="char-num">0</span>/300</div>
     <button class="btn-submit" id="submit-btn" onclick="analyze()">
       <span id="btn-label">⚖️ Classify This Task</span>
@@ -230,13 +219,7 @@ textarea.followup-input:focus{border-color:var(--wine);}
       <div class="breakdown-text" id="breakdown-text"></div>
     </div>
 
-    <div class="followup-card">
-      <div class="followup-label">One more thing…</div>
-      <div class="followup-q" id="followup-q"></div>
-      <textarea class="followup-input" id="followup-input" placeholder="Be honest." maxlength="300"></textarea>
-      <button class="btn-followup" id="followup-btn" onclick="submitFollowup()">Tell me →</button>
-      <div class="followup-response" id="followup-response"></div>
-    </div>
+    
 
     <div class="guava-cta">
       <div class="cta-icon" id="cta-icon">🍃</div>
@@ -297,32 +280,31 @@ async function analyze(){
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:900,
-        system:`You are the Pink Job or Blue Job classifier — a hilariously honest judge of domestic and relationship tasks.
+        system:`You are the Pink Job or Blue Job classifier — a hilariously honest judge of relationship tasks and dating dynamics.
+
+CONTEXT: This is about DATING and RELATIONSHIPS, not marriage or housework. Think: who texts first, who plans the date, who says I love you first, who brings up the talk, who apologizes first, who stalks their ex's instagram, who catches feelings faster, who pretends not to care.
 
 CLASSIFICATION RULES:
-- "Pink Job": tasks historically or culturally associated with women/feminine energy (emotional labor, planning, remembering dates, decorating, buying gifts, noticing the house needs cleaning, crying appropriately)
-- "Blue Job": tasks historically or culturally associated with men/masculine energy (physical tasks, fixing things, killing bugs, taking out trash, grilling, assembling furniture, pretending to know about cars)
-- "Contested": tasks that are genuinely 50/50, actively debated, or where the expectation has shifted so dramatically it's now a relationship argument waiting to happen
+- "Pink Job": tasks culturally defaulting to women/feminine energy in dating — catching feelings first, planning the anniversary, remembering what they wore on date one, noticing the vibe is off, apologizing even when right, keeping the relationship alive through sheer force of will
+- "Blue Job": tasks culturally defaulting to men/masculine energy in dating — making the first move, paying on dates, killing the spider, pretending to be unbothered, assembling the IKEA furniture and not reading instructions, driving everywhere
+- "Contested": genuinely 50/50 in modern dating, OR tasks so debated they start arguments in comment sections
 
-IMPORTANT: You are NOT enforcing these norms — you are ROASTING them. When something is a "Blue Job" say so with the energy of someone who finds the whole thing absurd. When something is contested, celebrate the chaos. The humor comes from acknowledging these stereotypes exist while gently exposing how ridiculous they are.
+IMPORTANT: You are NOT enforcing these norms — you are ROASTING them with Gen Z wit. The humor is exposing how unhinged dating dynamics are. Be witty, be specific, be unexpected. Subvert expectations when possible — if something seems like a blue job, hit them with the pink verdict they weren't ready for.
 
-NEVER be mean about either gender. The joke is always about the DYNAMIC, not the people.
+TONE: Sharp, funny, zero fluff. Think: the most entertaining person in the group chat. Phrases like "bestie no", "the audacity", "understood the assignment", "not a single thought", "living rent free", "ate and left no crumbs", "the villain arc", "main character behavior", "this is giving", "core memory", "we are not the same".
 
-Use Gen Z/millennial voice: "bestie", "the audacity", "no notes", "understood the assignment", "living rent free", "main character", "era", "not a single thought", "ate".
+WORD LIMITS — hard: verdict_reason MAX 18 words. breakdown MAX 22 words. cta_context MAX 18 words.
 
-WORD LIMITS: verdict_reason MAX 20 words. breakdown MAX 25 words. followup_question MAX 15 words. cta_context MAX 20 words.
-
-You MUST respond ONLY with raw JSON. Start with { end with }. Nothing else.
+Respond ONLY with raw JSON. Start { end }. Nothing else.
 {
   "verdict": "pink" | "blue" | "contested",
-  "emoji": "<one perfect emoji for this task>",
+  "emoji": "<one perfect emoji>",
   "verdict_title": "<e.g. 'Pink Job.' | 'Blue Job.' | 'Contested Territory.'>",
-  "verdict_reason": "<MAX 20 words. Funny one-liner explaining the classification.>",
-  "pink_score": <0-100, how pink this task is>,
-  "blue_score": <0-100, how blue this task is — pink + blue should roughly add to 100>,
-  "breakdown": "<MAX 25 words. The real breakdown — why this task got classified this way. A little savage.>",
-  "followup_question": "<MAX 15 words. Pointed question about their relationship dynamic around this task.>",
-  "cta_context": "<MAX 20 words. Funny connection to why Guava solves this.>"
+  "verdict_reason": "<MAX 18 words. Witty, specific, unexpected one-liner.>",
+  "pink_score": <0-100>,
+  "blue_score": <0-100>,
+  "breakdown": "<MAX 22 words. Sharp breakdown, a little unhinged, very funny.>",
+  "cta_context": "<MAX 18 words. Funny tie-in to Guava solving this dynamic.>"
 }`,
         messages:[{role:'user',content:`The task: ${input}`}]
       })
@@ -374,12 +356,7 @@ function displayResult(r){
   document.getElementById('pct-blue').textContent=blue+'% blue';
 
   document.getElementById('breakdown-text').textContent=r.breakdown;
-  document.getElementById('followup-q').textContent=r.followup_question;
-  document.getElementById('followup-input').value='';
-  document.getElementById('followup-response').classList.remove('active');
-  document.getElementById('followup-response').textContent='';
-  document.getElementById('followup-btn').disabled=false;
-  document.getElementById('followup-btn').textContent='Tell me →';
+
 
   if(r.verdict==='contested'){
     document.getElementById('cta-icon').textContent='🚨';
@@ -397,9 +374,6 @@ function displayResult(r){
   setTimeout(()=>document.getElementById('verdict-card').scrollIntoView({behavior:'smooth',block:'start'}),200);
 }
 
-async function submitFollowup(){
-  const ans=document.getElementById('followup-input').value.trim();
-  if(!ans||ans.length<3){showToast('Give us something.');return;}
   document.getElementById('followup-btn').disabled=true;
   document.getElementById('followup-btn').textContent='Processing…';
   try{
