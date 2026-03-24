@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Workplace Reality Check — Guava Social</title>
+<meta property="og:title" content="The Workplace Reality Check — Guava Social">
+<meta property="og:description" content="Describe anything happening at work. We'll give you an honest, funny read. HR safe. Extremely accurate.">
+<meta property="og:url" content="https://joinguava.co/work-quiz.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Workplace Reality Check — Guava Social">
+<meta name="twitter:description" content="Describe anything happening at work. We'll give you an honest, funny read.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sage:#8B9D83;--olive:#6B7C5E;--mint:#A8C5B4;
+  --rose:#D4A5A5;--cream:#F5F3EF;--dark:#2C3E2E;
+  --white:#FFFFFF;--muted:#7A8C7C;--bg:#F5F3EF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%238B9D83' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.blob{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;}
+.blob-1{width:480px;height:480px;background:rgba(168,197,180,0.15);top:-120px;right:-100px;}
+.blob-2{width:360px;height:360px;background:rgba(212,165,165,0.1);bottom:-80px;left:-80px;}
+
+.wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;align-items:center;}
+
+/* NAV */
+.nav{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;}
+.nav a{text-decoration:none;display:flex;align-items:center;gap:9px;}
+.nav img{width:36px;height:36px;object-fit:contain;}
+.nav-wrap{display:flex;flex-direction:column;gap:1px;}
+.nav-word{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--olive);}
+.nav-sub{font-size:11px;color:var(--muted);font-weight:300;letter-spacing:0.3px;}
+.nav-tag{font-size:12px;color:var(--muted);font-style:italic;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:48px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--olive);color:var(--white);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:24px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,7vw,64px);font-weight:900;line-height:0.95;letter-spacing:-2px;color:var(--dark);margin-bottom:20px;}
+.hero h1 em{font-style:italic;color:var(--olive);}
+.hero-sub{font-size:17px;line-height:1.7;color:var(--muted);max-width:420px;margin:0 auto;font-weight:300;}
+
+/* INPUT CARD */
+.input-card{background:var(--white);border-radius:24px;padding:40px;width:100%;border:1.5px solid rgba(139,157,131,0.2);box-shadow:0 4px 48px rgba(44,62,46,0.07);margin-bottom:24px;position:relative;overflow:hidden;}
+.input-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--mint),var(--sage),var(--olive),var(--rose));}
+.input-label{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.input-hint{font-size:13px;color:var(--muted);margin-bottom:20px;font-weight:300;font-style:italic;}
+textarea{width:100%;min-height:120px;background:var(--bg);border:1.5px solid rgba(139,157,131,0.2);border-radius:14px;padding:16px 18px;font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;color:var(--dark);resize:none;outline:none;transition:border-color 0.2s ease;}
+textarea:focus{border-color:var(--sage);}
+textarea::placeholder{color:#b0b8b0;font-style:italic;}
+.char-count{font-size:12px;color:var(--muted);text-align:right;margin-top:6px;margin-bottom:20px;}
+.btn-submit{width:100%;background:var(--olive);color:var(--white);border:none;border-radius:14px;padding:18px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.22s ease;box-shadow:0 4px 20px rgba(107,124,94,0.3);display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-submit:hover{background:var(--dark);transform:translateY(-2px);box-shadow:0 8px 28px rgba(44,62,46,0.25);}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
+/* LOADING */
+.loading-state{display:none;text-align:center;padding:24px 0;}
+.loading-state.active{display:block;}
+.loading-dots{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;}
+.ld{width:10px;height:10px;border-radius:50%;animation:ldP 1.2s ease-in-out infinite;}
+.ld-1{background:var(--mint);}
+.ld-2{background:var(--sage);animation-delay:0.15s;}
+.ld-3{background:var(--rose);animation-delay:0.3s;}
+.ld-4{background:var(--olive);animation-delay:0.45s;}
+@keyframes ldP{0%,100%{transform:scale(0.6);opacity:0.4;}50%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--muted);transition:opacity 0.2s ease;}
+
+/* RESULT */
+.result-section{display:none;width:100%;}
+.result-section.active{display:block;animation:fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* VERDICT CARD — the big reveal */
+.verdict-card{border-radius:24px;padding:52px 44px 44px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden;}
+.verdict-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;opacity:0.1;}
+.verdict-emoji{font-size:56px;margin-bottom:16px;display:block;animation:pop 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.15s both;}
+@keyframes pop{from{transform:scale(0.2);opacity:0;}to{transform:scale(1);opacity:1;}}
+.verdict-label{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:12px;}
+.verdict-sentence{font-size:16px;line-height:1.7;opacity:0.88;max-width:420px;margin:0 auto;font-weight:300;}
+
+/* verdict themes */
+.vt-valid{background:linear-gradient(135deg,#e8f2ec,#d4e8da);color:var(--dark);}
+.vt-valid::after{background:var(--sage);}
+.vt-valid .verdict-label{color:var(--olive);}
+
+.vt-chaos{background:linear-gradient(135deg,#fde8ea,#fcd0d5);color:var(--dark);}
+.vt-chaos::after{background:var(--rose);}
+.vt-chaos .verdict-label{color:#a86b6b;}
+
+.vt-you{background:linear-gradient(135deg,var(--cream),#ede0d4);color:var(--dark);}
+.vt-you::after{background:#c4a832;}
+.vt-you .verdict-label{color:#7a5000;}
+
+.vt-system{background:linear-gradient(135deg,#eef1f5,#dde3ec);color:var(--dark);}
+.vt-system::after{background:#8b94ad;}
+.vt-system .verdict-label{color:#3a4060;}
+
+.vt-both{background:linear-gradient(135deg,#fdf6dc,#f0e8a8);color:var(--dark);}
+.vt-both::after{background:#c4a832;}
+.vt-both .verdict-label{color:#7a6000;}
+
+/* ROAST CARD */
+.roast-card{background:var(--white);border-radius:24px;padding:32px 40px;margin-bottom:20px;border:1.5px solid rgba(139,157,131,0.15);box-shadow:0 2px 32px rgba(44,62,46,0.05);}
+.roast-eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--sage);font-weight:500;font-family:'Playfair Display',serif;margin-bottom:12px;}
+.roast-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;line-height:1.65;color:var(--dark);}
+
+/* SHARE QUOTE */
+.share-quote{background:var(--cream);border-radius:16px;padding:24px 28px;margin-bottom:20px;border-left:4px solid var(--sage);}
+.share-quote-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--sage);font-weight:500;font-family:'Playfair Display',serif;margin-bottom:10px;}
+.share-quote-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;font-style:italic;line-height:1.55;color:var(--dark);}
+
+/* LINKEDIN CTA */
+.linkedin-cta{background:var(--white);border-radius:20px;padding:28px 32px;border:1.5px solid rgba(139,157,131,0.2);box-shadow:0 2px 24px rgba(44,62,46,0.05);margin-bottom:20px;display:flex;align-items:flex-start;gap:16px;}
+.li-icon{width:44px;height:44px;min-width:44px;background:#0077B5;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:15px;font-family:'DM Sans',sans-serif;}
+.li-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.li-text{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:12px;}
+.btn-li{background:#0077B5;color:var(--white);border:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s ease;text-decoration:none;display:inline-block;}
+.btn-li:hover{background:#005f92;transform:translateY(-1px);}
+
+/* ACTIONS */
+.result-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;}
+.btn-share{background:var(--bg);color:var(--olive);border:1.5px solid rgba(107,124,94,0.25);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.18s ease;display:flex;align-items:center;gap:7px;width:100%;max-width:380px;justify-content:center;}
+.btn-share:hover{border-color:var(--olive);background:var(--white);}
+.btn-again{font-size:14px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-decoration-color:rgba(122,140,124,0.3);transition:color 0.18s;font-weight:300;}
+.btn-again:hover{color:var(--olive);}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:var(--white);padding:14px 28px;border-radius:100px;font-size:14px;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);z-index:999;white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:580px){
+  .hero h1{font-size:40px;}
+  .input-card,.roast-card{padding:28px 22px;}
+  .verdict-card{padding:36px 24px 32px;}
+  .verdict-label{font-size:34px;}
+  .linkedin-cta{flex-direction:column;padding:24px 22px;}
+}
+</style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="wrap">
+
+  <nav class="nav">
+    <a href="https://joinguava.co">
+      <img src="logo.png" alt="Guava Social">
+      <div class="nav-wrap">
+        <span class="nav-word">Guava Social</span>
+        <span class="nav-sub">intentional connection</span>
+      </div>
+    </a>
+    <span class="nav-tag">a professional service</span>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">📋 Workplace Intelligence Division</div>
+    <h1>The Workplace<br><em>Reality Check</em></h1>
+    <p class="hero-sub">Type your work situation. We'll be honest. It's free therapy with less crying.</p>
+  </div>
+
+  <div class="input-card" id="input-card">
+    <div class="input-label">What's going on?</div>
+    <div class="input-hint">Anything counts. Serious or absurd. e.g. "We have to sit next to each other all day and the office only stocks $3 snacks" is completely valid input.</div>
+    <textarea id="main-input" placeholder="e.g. Got a performance review that said I need to 'be more proactive' from someone who schedules meetings to plan future meetings…" maxlength="500" oninput="updateChar()"></textarea>
+    <div class="char-count"><span id="char-num">0</span>/500</div>
+    <button class="btn-submit" id="submit-btn" onclick="analyze()">
+      <span id="btn-label">📋 Get My Reality Check</span>
+    </button>
+    <div class="loading-state" id="loading-state">
+      <div class="loading-dots">
+        <div class="ld ld-1"></div><div class="ld ld-2"></div>
+        <div class="ld ld-3"></div><div class="ld ld-4"></div>
+      </div>
+      <div class="loading-text" id="loading-text">Reviewing your situation…</div>
+    </div>
+  </div>
+
+  <div class="result-section" id="result-section">
+
+    <div class="verdict-card" id="verdict-card">
+      <span class="verdict-emoji" id="verdict-emoji"></span>
+      <div class="verdict-label" id="verdict-label"></div>
+      <div class="verdict-sentence" id="verdict-sentence"></div>
+    </div>
+
+    <div class="roast-card">
+      <div class="roast-eyebrow">The full read</div>
+      <div class="roast-text" id="roast-text"></div>
+    </div>
+
+    <div class="share-quote">
+      <div class="share-quote-label">Screenshot this</div>
+      <div class="share-quote-text" id="share-quote-text"></div>
+    </div>
+
+    <div class="linkedin-cta">
+      <div class="li-icon">in</div>
+      <div>
+        <div class="li-title">Follow Guava Social on LinkedIn</div>
+        <div class="li-text">Where self-awareness meets professional life. More tools like this, for people who show up with intention — even when the snack budget is $3.</div>
+        <a href="https://www.linkedin.com/company/guava-social/" class="btn-li" target="_blank">Follow →</a>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-share" onclick="shareResult()">📤 Share your result</button>
+      <button class="btn-again" onclick="tryAgain()">Check another situation</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const LOADING_MSGS=[
+  "Reviewing your situation…",
+  "Consulting the handbook…",
+  "Checking precedent…",
+  "Running the numbers…",
+  "Calibrating the read…"
+];
+
+const VERDICT_THEMES={
+  valid:"vt-valid",
+  chaos:"vt-chaos",
+  you:"vt-you",
+  system:"vt-system",
+  both:"vt-both"
+};
+
+let currentInput='';
+
+function updateChar(){
+  document.getElementById('char-num').textContent=document.getElementById('main-input').value.length;
+}
+
+async function analyze(){
+  const input=document.getElementById('main-input').value.trim();
+  if(!input||input.length<5){showToast('Give us something to work with.');return;}
+  currentInput=input;
+  document.getElementById('submit-btn').disabled=true;
+  document.getElementById('btn-label').textContent='⏳ Analyzing…';
+  document.getElementById('loading-state').classList.add('active');
+  document.getElementById('result-section').classList.remove('active');
+  document.getElementById('input-card').scrollIntoView({behavior:'smooth',block:'center'});
+
+  let mi=0;
+  const lel=document.getElementById('loading-text');
+  lel.style.transition='opacity 0.2s ease';
+  const liv=setInterval(()=>{
+    mi=(mi+1)%LOADING_MSGS.length;
+    lel.style.opacity=0;
+    setTimeout(()=>{lel.textContent=LOADING_MSGS[mi];lel.style.opacity=1;},220);
+  },1000);
+
+  try{
+    const res=await fetch('/api/proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:900,
+        system:`You are The Workplace Reality Check — chaotic, honest, and deeply funny. You handle ANYTHING work-related: bad vibes, weird policies, the snack situation, coworker crimes, performance reviews written by someone who has never met you, the thermostat, the parking lot drama, the Slack message you read 11 times.
+
+INSPIRATION: Broad City. The funniest person in the group chat who also somehow gives genuinely useful advice. You validate AND roast with equal energy. Zero filter, zero meanness, zero HR violations.
+
+RULES:
+- Treat the $3 snack budget with the same gravitas as a toxic work environment. Both are valid crises.
+- Find the specific absurdity in what they described and name it loudly.
+- Never lecture. Never preach. Never target individuals by name.
+- Be specific to their situation — not generic corporate speak.
+- Use: "bestie", "not a single thought", "the audacity", "this is giving", "we are not the same", "living rent free", "understood the assignment", "ate and left no crumbs", "iconic", "the villain arc"
+- End with something that makes them want to screenshot it immediately.
+
+VERDICT TYPES:
+- "valid": they are right, this is insane, fully validated
+- "chaos": the whole environment is unhinged and everyone is just surviving
+- "you": delivered with love — the self-awareness nudge they needed
+- "system": it's bigger than anyone in that building
+- "both": both things are spectacularly true at the same time
+
+HARD WORD LIMITS — non negotiable:
+- verdict_label: MAX 4 words. Funny category. e.g. "Certified Corporate Chaos", "Completely Valid Bestie", "A Little Bit You", "System Issue Detected", "It's Giving Both"
+- verdict_sentence: MAX 18 words. Punchy. Specific. Slightly unhinged.
+- roast: MAX 40 words. Broad City energy. Find the comedy in the specific details they gave. Do not be generic.
+- shareable_line: MAX 16 words. The thing they'll text their coworker immediately.
+
+NEVER ask for clarification. If vague, pick the funniest interpretation and commit.
+
+Respond ONLY with raw JSON starting { ending }. Nothing else.
+{
+  "verdict_type": "valid"|"chaos"|"you"|"system"|"both",
+  "emoji": "<one perfect emoji that captures the vibe>",
+  "verdict_label": "<MAX 4 words>",
+  "verdict_sentence": "<MAX 18 words. Specific and funny.>",
+  "roast": "<MAX 40 words. Broad City energy. Specific to their situation.>",
+  "shareable_line": "<MAX 16 words. Screenshot-worthy.>"
+}`,
+        messages:[{role:'user',content:`Work situation: ${input}`}]
+      })
+    });
+
+    clearInterval(liv);
+    if(!res.ok) throw new Error(`${res.status}`);
+    const data=await res.json();
+    const raw=data.content[0].text;
+    const match=raw.match(/\{[\s\S]*\}/);
+    if(!match) throw new Error('no json');
+    displayResult(JSON.parse(match[0]));
+
+  }catch(e){
+    clearInterval(liv);
+    console.error(e);
+    if(e.message.includes('401')) showToast('API issue — check Vercel settings.');
+    else if(e.message.includes('429')) showToast('Taking a breather — try again shortly.');
+    else showToast('Something went wrong — please try again.');
+    document.getElementById('submit-btn').disabled=false;
+    document.getElementById('btn-label').textContent='📋 Get My Reality Check';
+    document.getElementById('loading-state').classList.remove('active');
+  }
+}
+
+function displayResult(r){
+  document.getElementById('loading-state').classList.remove('active');
+
+  const vc=document.getElementById('verdict-card');
+  vc.className='verdict-card '+(VERDICT_THEMES[r.verdict_type]||'vt-valid');
+  document.getElementById('verdict-emoji').textContent=r.emoji;
+  document.getElementById('verdict-label').textContent=r.verdict_label;
+  document.getElementById('verdict-sentence').textContent=r.verdict_sentence;
+  document.getElementById('roast-text').textContent=r.roast;
+  document.getElementById('share-quote-text').textContent=r.shareable_line;
+
+  window._result={label:r.verdict_label,line:r.shareable_line,input:currentInput};
+  document.getElementById('result-section').classList.add('active');
+  document.getElementById('submit-btn').disabled=false;
+  document.getElementById('btn-label').textContent='📋 Get My Reality Check';
+  setTimeout(()=>document.getElementById('verdict-card').scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
+function tryAgain(){
+  document.getElementById('main-input').value='';
+  document.getElementById('char-num').textContent='0';
+  document.getElementById('result-section').classList.remove('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>document.getElementById('main-input').focus(),400);
+}
+
+function shareResult(){
+  const r=window._result;if(!r)return;
+  const txt=`"${r.line}"\n\nI just ran my work situation through The Workplace Reality Check and got: "${r.label}"\n\nCheck yours → joinguava.co/work-quiz.html`;
+  if(navigator.share){
+    navigator.share({title:'The Workplace Reality Check',text:txt,url:'https://joinguava.co/work-quiz.html'})
+      .catch(()=>navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied!')));
+  } else {
+    navigator.clipboard.writeText(txt).then(()=>showToast('✓ Copied to clipboard'));
+  }
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),5000);
+}
+</script>
+</body>
+</html>
