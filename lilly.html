@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lilly — Mint & Lily</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --mint:       #4AAF8C;
+  --mint-dark:  #2D8A6A;
+  --mint-light: #E8F5F0;
+  --mint-mid:   #A8D8C8;
+  --white:      #FFFFFF;
+  --off-white:  #F9FDFB;
+  --gold:       #B89A4A;
+  --gold-light: #F5EDD6;
+  --dark:       #1A2520;
+  --mid:        #3D5048;
+  --soft:       #7A9488;
+  --border:     #D4E8DF;
+  --shadow:     rgba(74,175,140,0.08);
+  --red:        #C0392B;
+  --red-light:  #FDECEA;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--off-white);
+  color:var(--dark);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* ── NAV ── */
+nav{
+  width:100%;display:flex;align-items:center;
+  justify-content:space-between;
+  padding:0 28px;height:58px;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+}
+.nav-left{display:flex;align-items:center;gap:11px}
+.lilly-orb{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mint),var(--mint-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--white);
+  box-shadow:0 2px 8px var(--shadow);flex-shrink:0;
+}
+.nav-name{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--dark);letter-spacing:.02em}
+.nav-role{font-size:10px;color:var(--soft);letter-spacing:.08em;text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:8px}
+.pulse{width:7px;height:7px;background:var(--mint);border-radius:50%;animation:pulse 2.5s infinite}
+.pulse.off{background:#ccc;animation:none}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.nav-status{font-size:11px;color:var(--soft)}
+.settings-btn{
+  background:none;border:1px solid var(--border);
+  border-radius:8px;padding:5px 10px;
+  font-size:11px;color:var(--soft);cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .15s;
+}
+.settings-btn:hover{border-color:var(--mint);color:var(--mint)}
+.reset-btn{
+  background:none;border:1px solid var(--border);
+  border-radius:8px;padding:5px 10px;
+  font-size:11px;color:var(--soft);cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .15s;
+}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* ── MAIN ── */
+.main{width:100%;max-width:660px;flex:1;display:flex;flex-direction:column;padding:0 20px 40px}
+
+/* ── SETUP GATE (shown when no API key) ── */
+#setupGate{
+  margin:32px 0 0;
+  background:var(--white);border:1px solid var(--border);
+  border-radius:14px;padding:28px;
+  box-shadow:0 4px 24px var(--shadow);
+}
+.setup-title{
+  font-family:'Cormorant Garamond',serif;font-size:22px;
+  color:var(--dark);margin-bottom:6px;
+}
+.setup-sub{font-size:13px;color:var(--soft);margin-bottom:22px;line-height:1.6}
+.field-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);font-weight:500;margin-bottom:6px}
+.field-input{
+  width:100%;border:1px solid var(--border);border-radius:9px;
+  padding:10px 14px;font-size:13.5px;
+  font-family:'Inter',sans-serif;color:var(--dark);
+  background:var(--off-white);outline:none;
+  transition:border-color .2s;margin-bottom:14px;
+}
+.field-input:focus{border-color:var(--mint)}
+.field-textarea{
+  width:100%;border:1px solid var(--border);border-radius:9px;
+  padding:10px 14px;font-size:13px;line-height:1.6;
+  font-family:'Inter',sans-serif;color:var(--dark);
+  background:var(--off-white);outline:none;resize:vertical;
+  min-height:90px;transition:border-color .2s;margin-bottom:6px;
+}
+.field-textarea:focus{border-color:var(--mint)}
+.field-hint{font-size:11px;color:var(--soft);margin-bottom:18px;line-height:1.5}
+.setup-btn{
+  width:100%;padding:12px;background:var(--mint);
+  color:white;border:none;border-radius:9px;
+  font-size:14px;font-weight:500;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:background .2s;
+  letter-spacing:.02em;
+}
+.setup-btn:hover{background:var(--mint-dark)}
+
+/* ── SETTINGS PANEL (overlay) ── */
+#settingsPanel{
+  display:none;
+  position:fixed;inset:0;z-index:200;
+  background:rgba(26,37,32,.45);
+  align-items:flex-start;justify-content:center;
+  padding-top:80px;
+}
+#settingsPanel.open{display:flex}
+.settings-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:14px;padding:24px;width:100%;max-width:500px;
+  margin:0 20px;
+  box-shadow:0 8px 40px rgba(0,0,0,.12);
+}
+.settings-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:20px;
+}
+.settings-title{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--dark)}
+.close-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:18px;color:var(--soft);line-height:1;padding:4px;
+}
+.close-btn:hover{color:var(--dark)}
+.settings-save{
+  width:100%;padding:11px;background:var(--mint);
+  color:white;border:none;border-radius:9px;
+  font-size:13.5px;font-weight:500;cursor:pointer;
+  font-family:'Inter',sans-serif;margin-top:4px;
+  transition:background .2s;
+}
+.settings-save:hover{background:var(--mint-dark)}
+.memory-clear{
+  width:100%;padding:9px;background:none;
+  color:var(--red);border:1px solid var(--red);
+  border-radius:9px;font-size:12px;cursor:pointer;
+  font-family:'Inter',sans-serif;margin-top:8px;
+  transition:all .2s;
+}
+.memory-clear:hover{background:var(--red-light)}
+
+/* ── BRIEF STRIP ── */
+.brief-strip{
+  margin:18px 0 0;
+  background:var(--white);border:1px solid var(--border);
+  border-left:3px solid var(--mint);border-radius:10px;
+  padding:12px 16px;font-size:12.5px;color:var(--mid);
+  line-height:1.6;display:none;
+}
+.brief-label{
+  font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--mint);font-weight:500;margin-bottom:5px;
+}
+.brief-strip strong{color:var(--dark);font-weight:500}
+
+/* ── MEMORY BADGE ── */
+.memory-badge{
+  margin:10px 0 0;
+  display:none;
+  background:var(--gold-light);border:1px solid #E5D4A0;
+  border-radius:8px;padding:8px 13px;
+  font-size:11.5px;color:#7A6020;
+  display:flex;align-items:center;gap:7px;
+}
+.memory-badge span{flex:1}
+.memory-edit{
+  font-size:11px;color:var(--gold);cursor:pointer;
+  text-decoration:underline;white-space:nowrap;
+}
+
+/* ── CHAT WINDOW ── */
+.chat-window{
+  flex:1;margin-top:12px;background:var(--white);
+  border:1px solid var(--border);border-radius:14px;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 4px 24px var(--shadow);min-height:480px;
+}
+.messages{
+  flex:1;overflow-y:auto;padding:22px 20px;
+  display:flex;flex-direction:column;gap:18px;
+  scroll-behavior:smooth;
+}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-track{background:transparent}
+.messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ── MESSAGE BUBBLES ── */
+.msg{display:flex;gap:10px;align-items:flex-start}
+.msg.user{flex-direction:row-reverse}
+.av{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;margin-top:2px;
+}
+.av.lilly{
+  background:linear-gradient(135deg,var(--mint),var(--mint-dark));
+  color:white;font-family:'Cormorant Garamond',serif;font-size:14px;
+}
+.av.user{background:var(--mint-light);color:var(--mint);font-weight:500}
+.bubble{
+  max-width:80%;padding:11px 15px;
+  font-size:13.5px;line-height:1.65;border-radius:14px;
+}
+.msg.lilly .bubble{
+  background:var(--off-white);border:1px solid var(--border);
+  color:var(--dark);border-radius:3px 14px 14px 14px;
+}
+.msg.user .bubble{
+  background:var(--mint);color:white;
+  border-radius:14px 3px 14px 14px;
+}
+.bubble strong{font-weight:500}
+.bubble ol,.bubble ul{padding-left:18px;margin-top:6px}
+.bubble li{margin-bottom:3px}
+
+/* ── TYPING ── */
+.typing-wrap{display:none}
+.typing-wrap .bubble{
+  background:var(--off-white);border:1px solid var(--border);
+  border-radius:3px 14px 14px 14px;
+  padding:13px 18px;display:flex;gap:5px;align-items:center;
+}
+.dot-t{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--mint-mid);animation:bounce 1.2s infinite;
+}
+.dot-t:nth-child(2){animation-delay:.2s}
+.dot-t:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+/* ── INPUT ── */
+.input-area{
+  border-top:1px solid var(--border);padding:13px 16px;
+  display:flex;gap:10px;align-items:center;background:var(--white);
+}
+.chat-in{
+  flex:1;border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;font-size:13.5px;
+  font-family:'Inter',sans-serif;color:var(--dark);
+  background:var(--off-white);outline:none;transition:border-color .2s;
+}
+.chat-in:focus{border-color:var(--mint)}
+.send{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--mint);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;flex-shrink:0;
+}
+.send:hover{background:var(--mint-dark)}
+.send svg{width:16px;height:16px;fill:white}
+
+/* ── FOOTER ── */
+footer{
+  width:100%;max-width:660px;padding:14px 20px 28px;
+  text-align:center;font-size:11px;color:var(--soft);
+}
+
+/* ── SPLASH ── */
+#splash{
+  position:fixed;inset:0;background:var(--off-white);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  z-index:999;transition:opacity .5s;
+}
+#splash .orb{
+  width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mint),var(--mint-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:24px;color:white;
+  animation:popIn .4s ease;
+}
+@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+#splash p{font-size:13px;color:var(--soft)}
+
+@media(max-width:500px){
+  nav{padding:0 16px}
+  .bubble{max-width:90%;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="orb">L</div>
+  <p>Starting up…</p>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="lilly-orb">L</div>
+    <div>
+      <div class="nav-name">Lilly</div>
+      <div class="nav-role">Mint & Lily · Creator Intelligence</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="pulse" id="statusDot"></div>
+    <span class="nav-status" id="statusText">Connecting…</span>
+    <button class="reset-btn" onclick="resetSession()" id="resetBtn" style="display:none">↺ New session</button>
+    <button class="settings-btn" onclick="openSettings()">⚙ Settings</button>
+  </div>
+</nav>
+
+<!-- SETTINGS PANEL -->
+<div id="settingsPanel">
+  <div class="settings-card">
+    <div class="settings-header">
+      <div class="settings-title">Settings</div>
+      <button class="close-btn" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="field-label">API Key</div>
+    <input class="field-input" type="password" id="settingsKey" placeholder="sk-ant-…">
+    <div class="field-label">Session Notes</div>
+    <textarea class="field-textarea" id="settingsNotes" placeholder="Paste your running notes here — decisions made, creators vetoed, current priorities. Lilly will carry these into every answer."></textarea>
+    <div class="field-hint">These notes persist between sessions and are saved to your browser. Lilly reads them at the start of every conversation.</div>
+    <div class="field-label">Lilly's Memory</div>
+    <textarea class="field-textarea" id="settingsMemory" placeholder="Lilly writes her own memory here after each session — key decisions, open questions, what to pick up next." style="min-height:80px"></textarea>
+    <div class="field-hint">You can edit or clear this at any time.</div>
+    <button class="settings-save" onclick="saveSettings()">Save & Apply</button>
+    <button class="memory-clear" onclick="clearMemory()">Clear Lilly's memory</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainArea" style="display:none">
+
+  <!-- Memory badge (shows when memory exists) -->
+  <div class="memory-badge" id="memoryBadge">
+    <span id="memoryPreview"></span>
+    <span class="memory-edit" onclick="openSettings()">edit</span>
+  </div>
+
+  <!-- Proactive brief strip -->
+  <div class="brief-strip" id="briefStrip">
+    <div class="brief-label">Lilly's briefing</div>
+    <span id="briefText"></span>
+  </div>
+
+  <!-- Chat window -->
+  <div class="chat-window">
+    <div class="messages" id="messages"></div>
+    <div class="msg lilly typing-wrap" id="typingWrap">
+      <div class="av lilly">L</div>
+      <div class="bubble">
+        <div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div>
+      </div>
+    </div>
+    <div class="input-area">
+      <input
+        class="chat-in" id="chatIn"
+        placeholder="Ask Lilly…"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"
+      >
+      <button class="send" onclick="send()">
+        <svg viewBox="0 0 24 24"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- SETUP GATE (shown when no API key) -->
+<div class="main" id="setupArea">
+  <div id="setupGate">
+    <div class="setup-title">Set up Lilly</div>
+    <div class="setup-sub">Enter your Anthropic API key to get started. Your key is saved only in your browser and never sent anywhere except the Anthropic API.</div>
+
+    <div class="field-label">Anthropic API Key</div>
+    <input class="field-input" type="password" id="setupKey" placeholder="sk-ant-…">
+
+    <div class="field-label">Session Notes <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></div>
+    <textarea class="field-textarea" id="setupNotes" placeholder="Anything Lilly should know going in — what was decided last session, creators that are off the table, current priorities, open questions."></textarea>
+    <div class="field-hint">These notes persist between sessions. You can update them anytime in Settings.</div>
+
+    <button class="setup-btn" onclick="setupAndLaunch()">Launch Lilly →</button>
+  </div>
+</div>
+
+<footer>Lilly · Mint & Lily Creator & Influencer Intelligence · Internal use only</footer>
+
+<script>
+// ── STORAGE KEYS ─────────────────────────────────────────────────
+const KEY_APIKEY  = "lilly_apikey";
+const KEY_NOTES   = "lilly_notes";
+const KEY_MEMORY  = "lilly_memory";
+
+// ── SYSTEM PROMPT ─────────────────────────────────────────────────
+function buildSystem() {
+  const notes  = load(KEY_NOTES)  || "";
+  const memory = load(KEY_MEMORY) || "";
+
+  return `You are Lilly — the creator & influencer marketing intelligence assistant for Mint & Lily jewelry. You operate like Jarvis from Iron Man: proactive, precise, calm, always one step ahead. You are the strategic right hand for the creator marketing lead.
+
+YOU HAVE THREE MODES — use all three fluidly:
+1. STRATEGIST: Flag risks, recommend next moves, advise on budget and program direction
+2. SOURCER: Find real Instagram creators using web search. Always return real verified IG handles with @, follower count, location, and why they fit. Never make up handles.
+3. ADVISOR: Draft creator briefs, outreach emails, campaign hooks, budget allocations
+
+RESPONSE RULES:
+- Match length to the question. Short answer for short questions. Full answer for complex ones. Never pad.
+- Never introduce yourself. Never explain what you can do. Just work.
+- When sourcing creators, use web_search to find REAL people. Return real @handles, real follower counts, real locations. If you can't verify a handle is real, say so.
+- When session starts (trigger: __SESSION_START__), read notes and memory, surface the single most important thing to act on right now, then ask one sharp question.
+- After any substantive exchange append on its own line:
+  [MEMORY_UPDATE: 2-3 sentences capturing decisions made, creators vetoed, priorities, open questions — written as Lilly briefing herself for next session]
+
+${notes ? `SESSION NOTES (ground truth — written by the team):\n${notes}\n` : ""}
+${memory ? `LILLY'S MEMORY FROM PREVIOUS SESSIONS:\n${memory}\n` : ""}
+
+MINT & LILY BRAND:
+- Personalized jewelry, founded 2019, San Francisco CA
+- CEO: Arjun Ohri (Fanrock portfolio)
+- Mission: Remind women of their strength through meaningful, personal jewelry
+- Origin: Cuff bracelet — "Whenever you feel overwhelmed, remember who you are and straighten your crown"
+- Price: $29–$79. Accessible-premium. Sentimental. Not flashy. Bridges generations.
+- Materials: Sterling silver or stainless steel base, 18K gold coat, lifetime guarantee
+- Products: Birthstone rings/bracelets/necklaces, name necklaces, initial jewelry, photo jewelry
+- Active launch: Birthstone collection
+- Core audience: Women 45+. Mothers, grandmothers, nurses, teachers. Defined by relationships. Buy as gifts and self-purchases.
+- Social: Instagram 240K, Facebook, TikTok. Expanding to Nordstrom.
+- Quality talking point (must be in every creator brief): sterling silver base, 18K gold coat, lifetime guarantee — tarnishing complaints have appeared in creator comments.
+
+CREATOR PROGRAM DATA:
+TOP PERFORMERS:
+1. @chelseacepedashull — IG cross-post — Oct 2024, still running — 17.5K followers, extraordinary engagement, warm faith-family voice. THE benchmark. Chelsea archetype = the filter for all new creator searches.
+2. @srham19x — Unboxing video — Aug 2025, still running — proven dark-post converter
+3. @thelifeoflibs — IG cross-post — Ring stacks — Dec 2024–Apr 2026
+4. @ashleighmoneysaver — IG cross-post — Nov 2024–Sep 2025
+
+MID PERFORMERS:
+5. @thefreshedit — Image — Oct 2025 — no real IG presence
+6. @savvyfinds — Image — Mar 2026 — one mid result (also underperformer ×2)
+7. @coleeee_p — Image — Aug 2025
+8. @amandagarcia — Image — Aug 2025 — possibly inactive, verify before renewal
+9. @brittwong — Image — Jan–May 2026
+
+UNDERPERFORMERS (all Savannah whitelist — The Social Savannah LLC):
+10. @abbilauren · 11. @reaganelizabeth · 12. @ellabright — Dec 2025, poor audience fit
+13–14. @savvyfinds ×2 — tarnish complaints in comments
+
+KEY STRATEGIC INSIGHTS:
+- IG cross-post is the highest-performing format — all 4 top performers use it
+- Savannah whitelist = 3 of 5 underperformers — sourcing process issue not creator quality. Pause new activations.
+- Chelsea archetype: warm, relatable, faith/family/home, non-trendy, real woman, trusting community, US South or Midwest, micro 15K–200K
+- Amanda Garcia possibly inactive — verify before renewal
+- $7M across 25 creators over 2 years = ~$280K per creator — clarify if this includes paid amplification
+
+CHELSEA ARCHETYPE FILTER (apply to every sourcing search):
+- US-based, South or Midwest strongly preferred
+- Warm, relatable, non-aspirational voice
+- Content pillars: faith, family, home, motherhood, everyday life
+- NOT: trendsetters, NYC/LA aesthetic, overly curated, fashion-forward, agency whitelists
+- Audience skews 45+ women who buy meaningful gifts
+- Engagement rate matters more than follower count
+- Format: IG cross-post or organic-first video
+- Real human with a face — not a brand account or decoration account
+
+SOURCING APPROACH:
+- Use web_search to find real creators. Search terms like "Instagram influencer [state] mom lifestyle faith family [follower range] 2024 2025"
+- Always return: @handle, follower count, location, content pillars, why they fit the Chelsea archetype, any red flags
+- Flag if a handle couldn't be verified as active
+- Never fabricate handles or follower counts`;
+}
+
+// ── STORAGE ───────────────────────────────────────────────────────
+function save(key, val) { try { localStorage.setItem(key, val); } catch(e){} }
+function load(key)       { try { return localStorage.getItem(key) || ""; } catch(e){ return ""; } }
+
+// ── STATE ─────────────────────────────────────────────────────────
+let history = [];
+let apiKey  = "";
+
+// ── HANDLE TOOL USE (web search) ──────────────────────────────────
+async function resolveToolUse(responseData) {
+  // Check if model wants to use a tool
+  const toolUseBlock = responseData.content?.find(b => b.type === "tool_use");
+  if (!toolUseBlock) return null;
+
+  // Add assistant turn with tool use
+  history.push({ role: "assistant", content: responseData.content });
+
+  // Call web search via our proxy
+  const searchRes = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+      "anthropic-dangerous-direct-browser-access": "true"
+    },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 4096,
+      system: buildSystem(),
+      tools: [{ type: "web_search_20250305", name: "web_search" }],
+      messages: [
+        ...history,
+        {
+          role: "user",
+          content: [{
+            type: "tool_result",
+            tool_use_id: toolUseBlock.id,
+            content: "Search completed."
+          }]
+        }
+      ]
+    })
+  });
+
+  if (!searchRes.ok) return null;
+  const searchData = await searchRes.json();
+  return searchData;
+}
+
+// ── API ───────────────────────────────────────────────────────────
+async function callLilly(userMsg) {
+  history.push({ role: "user", content: userMsg });
+
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+      "anthropic-dangerous-direct-browser-access": "true"
+    },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 4096,
+      system: buildSystem(),
+      tools: [{ type: "web_search_20250305", name: "web_search" }],
+      messages: history
+    })
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `API error ${res.status}`);
+  }
+
+  const data = await res.json();
+
+  // If model used a tool, handle the loop
+  let finalContent = data.content;
+  if (data.stop_reason === "tool_use") {
+    // Add assistant tool use to history
+    history.push({ role: "assistant", content: data.content });
+    // Get tool results and continue
+    const toolResultMsg = {
+      role: "user",
+      content: data.content
+        .filter(b => b.type === "tool_use")
+        .map(b => ({
+          type: "tool_result",
+          tool_use_id: b.id,
+          content: b.input?.query ? `Search for: ${b.input.query}` : "Search completed."
+        }))
+    };
+    // Make a second call with tool results
+    const res2 = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 4096,
+        system: buildSystem(),
+        tools: [{ type: "web_search_20250305", name: "web_search" }],
+        messages: [...history, toolResultMsg]
+      })
+    });
+    if (res2.ok) {
+      const data2 = await res2.json();
+      finalContent = data2.content;
+      history.push({ role: "user", content: toolResultMsg.content });
+    }
+  }
+
+  const textBlock = finalContent?.find(b => b.type === "text");
+  let reply = textBlock?.text || "Connection issue — try again.";
+
+  // Parse and save memory update
+  const memMatch = reply.match(/\[MEMORY_UPDATE:\s*([\s\S]*?)\]/);
+  if (memMatch) {
+    const existing = load(KEY_MEMORY);
+    const ts = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    const newMem = (existing ? existing + "\n" : "") + `[${ts}] ` + memMatch[1].trim();
+    save(KEY_MEMORY, newMem);
+    reply = reply.replace(/\[MEMORY_UPDATE:[\s\S]*?\]/, "").trim();
+    refreshMemoryBadge();
+  }
+
+  history.push({ role: "assistant", content: reply });
+  return reply;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────
+function fmt(t) {
+  t = t.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  t = t.replace(/\*(.*?)\*/g, "<em>$1</em>");
+  // Numbered list lines
+  const lines = t.split("\n");
+  let out = "", inOl = false, inUl = false;
+  for (const line of lines) {
+    const olMatch = line.match(/^(\d+)\.\s+(.+)/);
+    const ulMatch = line.match(/^[-•]\s+(.+)/);
+    if (olMatch) {
+      if (!inOl) { if(inUl){out+="</ul>";inUl=false;} out+="<ol>"; inOl=true; }
+      out += `<li>${olMatch[2]}</li>`;
+    } else if (ulMatch) {
+      if (!inUl) { if(inOl){out+="</ol>";inOl=false;} out+="<ul>"; inUl=true; }
+      out += `<li>${ulMatch[1]}</li>`;
+    } else {
+      if (inOl) { out+="</ol>"; inOl=false; }
+      if (inUl) { out+="</ul>"; inUl=false; }
+      out += line ? `<span>${line}</span><br>` : "<br>";
+    }
+  }
+  if (inOl) out += "</ol>";
+  if (inUl) out += "</ul>";
+  return out;
+}
+
+function addMsg(text, who) {
+  const msgs = document.getElementById("messages");
+  const wrap = document.createElement("div");
+  wrap.className = `msg ${who}`;
+  const av = document.createElement("div");
+  av.className = `av ${who}`;
+  av.textContent = who === "lilly" ? "L" : "You";
+  const bub = document.createElement("div");
+  bub.className = "bubble";
+  bub.innerHTML = who === "lilly" ? fmt(text) : text.replace(/\n/g,"<br>");
+  wrap.appendChild(av);
+  wrap.appendChild(bub);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping()  { document.getElementById("typingWrap").style.display="flex"; scrollBottom(); }
+function hideTyping()  { document.getElementById("typingWrap").style.display="none"; }
+function scrollBottom(){ const m=document.getElementById("messages"); m.scrollTop=m.scrollHeight; }
+
+function setStatus(live) {
+  const dot  = document.getElementById("statusDot");
+  const text = document.getElementById("statusText");
+  if (live) { dot.classList.remove("off"); text.textContent="Live"; }
+  else       { dot.classList.add("off");    text.textContent="No key"; }
+}
+
+// ── SEND ──────────────────────────────────────────────────────────
+async function send() {
+  const input = document.getElementById("chatIn");
+  const msg = input.value.trim();
+  if (!msg || !apiKey) return;
+  input.value = "";
+  addMsg(msg, "user");
+  showTyping();
+  try {
+    const reply = await callLilly(msg);
+    hideTyping();
+    addMsg(reply, "lilly");
+  } catch(e) {
+    hideTyping();
+    addMsg(`Error: ${e.message}`, "lilly");
+  }
+}
+
+// ── SESSION START ─────────────────────────────────────────────────
+async function startSession() {
+  showTyping();
+  try {
+    const brief = await callLilly("__SESSION_START__");
+    hideTyping();
+    document.getElementById("briefText").innerHTML = fmt(brief);
+    document.getElementById("briefStrip").style.display = "block";
+    addMsg(brief, "lilly");
+  } catch(e) {
+    hideTyping();
+    addMsg(`Couldn't connect: ${e.message}`, "lilly");
+  }
+}
+
+// ── MEMORY BADGE ─────────────────────────────────────────────────
+function refreshMemoryBadge() {
+  const mem = load(KEY_MEMORY);
+  const badge = document.getElementById("memoryBadge");
+  const preview = document.getElementById("memoryPreview");
+  if (mem) {
+    const lines = mem.trim().split("\n").filter(Boolean);
+    preview.textContent = "🧠 " + (lines[lines.length-1] || "Memory active");
+    badge.style.display = "flex";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────
+function openSettings() {
+  document.getElementById("settingsKey").value    = load(KEY_APIKEY);
+  document.getElementById("settingsNotes").value  = load(KEY_NOTES);
+  document.getElementById("settingsMemory").value = load(KEY_MEMORY);
+  document.getElementById("settingsPanel").classList.add("open");
+}
+function closeSettings() {
+  document.getElementById("settingsPanel").classList.remove("open");
+}
+function saveSettings() {
+  const key = document.getElementById("settingsKey").value.trim();
+  if (key) { apiKey = key; save(KEY_APIKEY, key); }
+  save(KEY_NOTES,   document.getElementById("settingsNotes").value);
+  save(KEY_MEMORY,  document.getElementById("settingsMemory").value);
+  closeSettings();
+  refreshMemoryBadge();
+  setStatus(!!apiKey);
+}
+function clearMemory() {
+  if (confirm("Clear Lilly's memory? This can't be undone.")) {
+    save(KEY_MEMORY, "");
+    document.getElementById("settingsMemory").value = "";
+    refreshMemoryBadge();
+  }
+}
+
+// ── SETUP GATE ────────────────────────────────────────────────────
+function setupAndLaunch() {
+  const key = document.getElementById("setupKey").value.trim();
+  if (!key || !key.startsWith("sk-")) {
+    alert("Please enter a valid Anthropic API key (starts with sk-ant-).");
+    return;
+  }
+  apiKey = key;
+  save(KEY_APIKEY, key);
+  save(KEY_NOTES,  document.getElementById("setupNotes").value);
+  launch();
+}
+
+function launch() {
+  document.getElementById("setupArea").style.display  = "none";
+  document.getElementById("mainArea").style.display   = "flex";
+  setStatus(true);
+  refreshMemoryBadge();
+  startSession();
+  document.getElementById("resetBtn").style.display = "block";
+}
+
+// ── RESET SESSION ─────────────────────────────────────────────────
+function resetSession() {
+  // Clear conversation history and chat window — memory and notes untouched
+  history = [];
+  const msgs = document.getElementById("messages");
+  msgs.innerHTML = "";
+  document.getElementById("briefStrip").style.display = "none";
+  document.getElementById("briefText").innerHTML = "";
+  startSession();
+}
+
+// ── BOOT ──────────────────────────────────────────────────────────
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash");
+    splash.style.opacity = "0";
+    setTimeout(() => {
+      splash.style.display = "none";
+      const savedKey = load(KEY_APIKEY);
+      if (savedKey && savedKey.startsWith("sk-")) {
+        apiKey = savedKey;
+        launch();
+      } else {
+        document.getElementById("setupArea").style.display = "flex";
+        setStatus(false);
+      }
+    }, 500);
+  }, 900);
+});
+
+// Close settings on backdrop click
+document.getElementById("settingsPanel").addEventListener("click", function(e){
+  if (e.target === this) closeSettings();
+});
+</script>
+</body>
+</html>
