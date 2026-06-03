@@ -327,18 +327,16 @@ footer{
 <div id="settingsPanel">
   <div class="settings-card">
     <div class="settings-header">
-      <div class="settings-title">Settings</div>
+      <div class="settings-title">Session Notes & Memory</div>
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
-    <div class="field-label">API Key</div>
-    <input class="field-input" type="password" id="settingsKey" placeholder="sk-ant-…">
-    <div class="field-label">Session Notes</div>
-    <textarea class="field-textarea" id="settingsNotes" placeholder="Paste your running notes here — decisions made, creators vetoed, current priorities. Lilly will carry these into every answer."></textarea>
-    <div class="field-hint">These notes persist between sessions and are saved to your browser. Lilly reads them at the start of every conversation.</div>
+    <div class="field-label">Your Session Notes</div>
+    <textarea class="field-textarea" id="settingsNotes" placeholder="Decisions made, creators vetoed, current priorities. Lilly reads this at the start of every session."></textarea>
+    <div class="field-hint">Update anytime. Lilly carries these into every answer.</div>
     <div class="field-label">Lilly's Memory</div>
-    <textarea class="field-textarea" id="settingsMemory" placeholder="Lilly writes her own memory here after each session — key decisions, open questions, what to pick up next." style="min-height:80px"></textarea>
-    <div class="field-hint">You can edit or clear this at any time.</div>
-    <button class="settings-save" onclick="saveSettings()">Save & Apply</button>
+    <textarea class="field-textarea" id="settingsMemory" placeholder="Lilly writes her own memory here after each session." style="min-height:80px"></textarea>
+    <div class="field-hint">Auto-updated by Lilly. You can edit or clear at any time.</div>
+    <button class="settings-save" onclick="saveSettings()">Save</button>
     <button class="memory-clear" onclick="clearMemory()">Clear Lilly's memory</button>
   </div>
 </div>
@@ -381,20 +379,15 @@ footer{
 
 </div>
 
-<!-- SETUP GATE (shown when no API key) -->
-<div class="main" id="setupArea">
+<!-- PASSWORD GATE -->
+<div class="main" id="gateArea" style="display:none">
   <div id="setupGate">
-    <div class="setup-title">Set up Lilly</div>
-    <div class="setup-sub">Enter your Anthropic API key to get started. Your key is saved only in your browser and never sent anywhere except the Anthropic API.</div>
-
-    <div class="field-label">Anthropic API Key</div>
-    <input class="field-input" type="password" id="setupKey" placeholder="sk-ant-…">
-
-    <div class="field-label">Session Notes <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></div>
-    <textarea class="field-textarea" id="setupNotes" placeholder="Anything Lilly should know going in — what was decided last session, creators that are off the table, current priorities, open questions."></textarea>
-    <div class="field-hint">These notes persist between sessions. You can update them anytime in Settings.</div>
-
-    <button class="setup-btn" onclick="setupAndLaunch()">Launch Lilly →</button>
+    <div class="gate-orb">L</div>
+    <div class="setup-title">Lilly</div>
+    <div class="setup-sub">Mint & Lily · Creator & Influencer Intelligence<br>Internal access only</div>
+    <input class="field-input" type="password" id="pwInput" placeholder="Enter team password" onkeydown="if(event.key==='Enter')unlock()" style="text-align:center;letter-spacing:.08em">
+    <div id="gateError" style="font-size:12px;color:var(--red);margin-bottom:10px;display:none">Incorrect password — try again</div>
+    <button class="setup-btn" onclick="unlock()">Enter →</button>
   </div>
 </div>
 
@@ -402,9 +395,13 @@ footer{
 
 <script>
 // ── STORAGE KEYS ─────────────────────────────────────────────────
-const KEY_APIKEY  = "lilly_apikey";
-const KEY_NOTES   = "lilly_notes";
-const KEY_MEMORY  = "lilly_memory";
+const KEY_NOTES  = "lilly_notes";
+const KEY_MEMORY = "lilly_memory";
+const KEY_AUTH   = "lilly_auth";
+
+// ── TEAM PASSWORD — change this to whatever you want ──────────────
+// Must exactly match TEAM_PASSWORD in your Vercel environment variables
+const TEAM_PASSWORD = "sophia";
 
 // ── SYSTEM PROMPT ─────────────────────────────────────────────────
 function buildSystem() {
@@ -490,84 +487,39 @@ function load(key)       { try { return localStorage.getItem(key) || ""; } catch
 
 // ── STATE ─────────────────────────────────────────────────────────
 let history = [];
-let apiKey  = "";
 
-// ── HANDLE TOOL USE (web search) ──────────────────────────────────
-async function resolveToolUse(responseData) {
-  // Check if model wants to use a tool
-  const toolUseBlock = responseData.content?.find(b => b.type === "tool_use");
-  if (!toolUseBlock) return null;
-
-  // Add assistant turn with tool use
-  history.push({ role: "assistant", content: responseData.content });
-
-  // Call web search via our proxy
-  const searchRes = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true"
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 4096,
-      system: buildSystem(),
-      tools: [{ type: "web_search_20250305", name: "web_search" }],
-      messages: [
-        ...history,
-        {
-          role: "user",
-          content: [{
-            type: "tool_result",
-            tool_use_id: toolUseBlock.id,
-            content: "Search completed."
-          }]
-        }
-      ]
-    })
-  });
-
-  if (!searchRes.ok) return null;
-  const searchData = await searchRes.json();
-  return searchData;
-}
-
-// ── API ───────────────────────────────────────────────────────────
+// ── API — calls Vercel proxy, API key stays on server ─────────────
 async function callLilly(userMsg) {
   history.push({ role: "user", content: userMsg });
 
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+  const payload = {
+    model: "claude-sonnet-4-6",
+    max_tokens: 4096,
+    system: buildSystem(),
+    tools: [{ type: "web_search_20250305", name: "web_search" }],
+    messages: history
+  };
+
+  const res = await fetch("/api/lilly", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true"
+      "Content-Type":    "application/json",
+      "x-team-password": TEAM_PASSWORD
     },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 4096,
-      system: buildSystem(),
-      tools: [{ type: "web_search_20250305", name: "web_search" }],
-      messages: history
-    })
+    body: JSON.stringify(payload)
   });
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err?.error?.message || `API error ${res.status}`);
+    throw new Error(err?.error || `Error ${res.status}`);
   }
 
   const data = await res.json();
 
-  // If model used a tool, handle the loop
+  // Handle tool use loop if model used web search
   let finalContent = data.content;
   if (data.stop_reason === "tool_use") {
-    // Add assistant tool use to history
     history.push({ role: "assistant", content: data.content });
-    // Get tool results and continue
     const toolResultMsg = {
       role: "user",
       content: data.content
@@ -575,23 +527,17 @@ async function callLilly(userMsg) {
         .map(b => ({
           type: "tool_result",
           tool_use_id: b.id,
-          content: b.input?.query ? `Search for: ${b.input.query}` : "Search completed."
+          content: b.input?.query ? `Search: ${b.input.query}` : "Search completed."
         }))
     };
-    // Make a second call with tool results
-    const res2 = await fetch("https://api.anthropic.com/v1/messages", {
+    const res2 = await fetch("/api/lilly", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true"
+        "Content-Type":    "application/json",
+        "x-team-password": TEAM_PASSWORD
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 4096,
-        system: buildSystem(),
-        tools: [{ type: "web_search_20250305", name: "web_search" }],
+        ...payload,
         messages: [...history, toolResultMsg]
       })
     });
@@ -605,7 +551,7 @@ async function callLilly(userMsg) {
   const textBlock = finalContent?.find(b => b.type === "text");
   let reply = textBlock?.text || "Connection issue — try again.";
 
-  // Parse and save memory update
+  // Parse and auto-save memory update
   const memMatch = reply.match(/\[MEMORY_UPDATE:\s*([\s\S]*?)\]/);
   if (memMatch) {
     const existing = load(KEY_MEMORY);
@@ -667,18 +613,18 @@ function showTyping()  { document.getElementById("typingWrap").style.display="fl
 function hideTyping()  { document.getElementById("typingWrap").style.display="none"; }
 function scrollBottom(){ const m=document.getElementById("messages"); m.scrollTop=m.scrollHeight; }
 
-function setStatus(live) {
+function setStatus(on) {
   const dot  = document.getElementById("statusDot");
   const text = document.getElementById("statusText");
-  if (live) { dot.classList.remove("off"); text.textContent="Live"; }
-  else       { dot.classList.add("off");    text.textContent="No key"; }
+  dot.classList.toggle("off", !on);
+  text.textContent = on ? "Live" : "—";
 }
 
 // ── SEND ──────────────────────────────────────────────────────────
 async function send() {
   const input = document.getElementById("chatIn");
   const msg = input.value.trim();
-  if (!msg || !apiKey) return;
+  if (!msg) return;
   input.value = "";
   addMsg(msg, "user");
   showTyping();
@@ -723,7 +669,6 @@ function refreshMemoryBadge() {
 
 // ── SETTINGS ──────────────────────────────────────────────────────
 function openSettings() {
-  document.getElementById("settingsKey").value    = load(KEY_APIKEY);
   document.getElementById("settingsNotes").value  = load(KEY_NOTES);
   document.getElementById("settingsMemory").value = load(KEY_MEMORY);
   document.getElementById("settingsPanel").classList.add("open");
@@ -732,13 +677,10 @@ function closeSettings() {
   document.getElementById("settingsPanel").classList.remove("open");
 }
 function saveSettings() {
-  const key = document.getElementById("settingsKey").value.trim();
-  if (key) { apiKey = key; save(KEY_APIKEY, key); }
-  save(KEY_NOTES,   document.getElementById("settingsNotes").value);
-  save(KEY_MEMORY,  document.getElementById("settingsMemory").value);
+  save(KEY_NOTES,  document.getElementById("settingsNotes").value);
+  save(KEY_MEMORY, document.getElementById("settingsMemory").value);
   closeSettings();
   refreshMemoryBadge();
-  setStatus(!!apiKey);
 }
 function clearMemory() {
   if (confirm("Clear Lilly's memory? This can't be undone.")) {
@@ -748,34 +690,32 @@ function clearMemory() {
   }
 }
 
-// ── SETUP GATE ────────────────────────────────────────────────────
-function setupAndLaunch() {
-  const key = document.getElementById("setupKey").value.trim();
-  if (!key || !key.startsWith("sk-")) {
-    alert("Please enter a valid Anthropic API key (starts with sk-ant-).");
-    return;
+// ── PASSWORD GATE ─────────────────────────────────────────────────
+function unlock() {
+  const pw = document.getElementById("pwInput").value.trim();
+  if (pw === TEAM_PASSWORD) {
+    save(KEY_AUTH, "true");
+    document.getElementById("gateArea").style.display = "none";
+    launch();
+  } else {
+    document.getElementById("gateError").style.display = "block";
+    document.getElementById("pwInput").value = "";
+    document.getElementById("pwInput").focus();
   }
-  apiKey = key;
-  save(KEY_APIKEY, key);
-  save(KEY_NOTES,  document.getElementById("setupNotes").value);
-  launch();
 }
 
 function launch() {
-  document.getElementById("setupArea").style.display  = "none";
-  document.getElementById("mainArea").style.display   = "flex";
+  document.getElementById("mainArea").style.display  = "flex";
+  document.getElementById("resetBtn").style.display  = "block";
   setStatus(true);
   refreshMemoryBadge();
   startSession();
-  document.getElementById("resetBtn").style.display = "block";
 }
 
 // ── RESET SESSION ─────────────────────────────────────────────────
 function resetSession() {
-  // Clear conversation history and chat window — memory and notes untouched
   history = [];
-  const msgs = document.getElementById("messages");
-  msgs.innerHTML = "";
+  document.getElementById("messages").innerHTML = "";
   document.getElementById("briefStrip").style.display = "none";
   document.getElementById("briefText").innerHTML = "";
   startSession();
@@ -788,13 +728,11 @@ window.addEventListener("load", () => {
     splash.style.opacity = "0";
     setTimeout(() => {
       splash.style.display = "none";
-      const savedKey = load(KEY_APIKEY);
-      if (savedKey && savedKey.startsWith("sk-")) {
-        apiKey = savedKey;
+      if (load(KEY_AUTH) === "true") {
         launch();
       } else {
-        document.getElementById("setupArea").style.display = "flex";
-        setStatus(false);
+        document.getElementById("gateArea").style.display = "flex";
+        document.getElementById("pwInput").focus();
       }
     }, 500);
   }, 900);
